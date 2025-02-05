@@ -46,7 +46,7 @@ function takeCommand(message) {
     if (message.includes("hello") || message.includes("hey")) {
         speak("Hello sir, what can I help you with?");
     } else if (message.includes("what are you")) {
-        speak("I am a virtual assistant, created by NHB LK COMPANY.");
+        speak("I am a Nova ai  assistant, created by NHB LK COMPANY.");
     } else if (message.includes("open youtube")) {
         speak("Opening YouTube...");
         window.open("https://youtube.com/", "_blank");

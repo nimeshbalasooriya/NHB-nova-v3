@@ -1,3 +1,16 @@
+let btn = document.querySelector("#btn");
+let content = document.querySelector("#content");
+let voice = document.querySelector("#voice");
+
+function speak(text) {
+    let text_speak = new SpeechSynthesisUtterance(text);
+    text_speak.rate = 1;
+    text_speak.pitch = 1;
+    text_speak.volume = 1;
+    text_speak.lang = "en-us";
+    window.speechSynthesis.speak(text_speak);
+}
+
 function getProgrammingLanguageInfo(language) {
     let languages = {
         "python": "Python is a popular programming language known for its simplicity and readability. It is widely used in web development, data science, and AI.",
@@ -14,6 +27,20 @@ function getProgrammingLanguageInfo(language) {
 
     return languages[language] || "I am not familiar with that programming language.";
 }
+
+let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = new speechRecognition();
+recognition.onresult = (event) => {
+    let transcript = event.results[event.resultIndex][0].transcript.toLowerCase();
+    content.innerText = transcript;
+    takeCommand(transcript);
+};
+
+btn.addEventListener("click", () => {
+    recognition.start();
+    voice.style.display = "block";
+    btn.style.display = "none";
+});
 
 function takeCommand(message) {
     voice.style.display = "none";
@@ -35,13 +62,17 @@ function takeCommand(message) {
     } else if (message.includes("date")) {
         let date = new Date().toLocaleString(undefined, { day: "numeric", month: "short" });
         speak(`Today's date is ${date}`);
-    } else if (message.includes("what is") && (message.includes("python") || message.includes("java") || message.includes("javascript") || message.includes("c++") || message.includes("php") || message.includes("go") || message.includes("swift") || message.includes("kotlin") || message.includes("dart") || message.includes("typescript"))) {
-        let lang = message.split("what is ")[1].trim();
-        let info = getProgrammingLanguageInfo(lang);
-        speak(info);
     } else {
-        let finalText = "This is what I found on the internet regarding " + message;
-        speak(finalText);
-        window.open(`https://www.google.com/search?q=${message}`, "_blank");
+        // **Programming Language Detection Using Regular Expressions**
+        let langMatch = message.match(/what is (python|java|javascript|c\+\+|php|go|swift|kotlin|dart|typescript)/);
+        if (langMatch) {
+            let lang = langMatch[1];
+            let info = getProgrammingLanguageInfo(lang);
+            speak(info);
+        } else {
+            let finalText = "This is what I found on the internet regarding " + message;
+            speak(finalText);
+            window.open(`https://www.google.com/search?q=${message}`, "_blank");
+        }
     }
 }

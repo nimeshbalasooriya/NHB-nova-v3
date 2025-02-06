@@ -11,26 +11,36 @@ function speak(text) {
     window.speechSynthesis.speak(text_speak);
 }
 
-function wishMe() {
-    let day = new Date();
-    let hours = day.getHours();
-    if (hours >= 0 && hours < 12) {
-        speak("Good Morning Sir");
-    } else if (hours >= 12 && hours < 16) {
-        speak("Good Afternoon Sir");
-    } else {
-        speak("Good Evening Sir");
-    }
+function getProgrammingLanguageInfo(language) {
+    let languages = {
+        "python": "Python is a popular programming language known for its simplicity and readability. It is widely used in web development, data science, and AI.",
+        "java": "Java is a high-level, object-oriented programming language used in enterprise applications, Android development, and backend services.",
+        "javascript": "JavaScript is a versatile programming language primarily used for web development, enabling dynamic and interactive websites.",
+        "c++": "C++ is a powerful programming language commonly used in game development, system programming, and high-performance applications.",
+        "php": "PHP is a server-side scripting language widely used for web development and content management systems like WordPress.",
+        "go": "Go, also known as Golang, is a statically typed programming language developed by Google, known for its efficiency and concurrency support.",
+        "swift": "Swift is Apple's programming language designed for developing iOS, macOS, watchOS, and tvOS applications.",
+        "kotlin": "Kotlin is a modern programming language that runs on the Java Virtual Machine and is widely used for Android app development.",
+        "dart": "Dart is a programming language developed by Google, mainly used for building cross-platform mobile applications using Flutter.",
+        "typescript": "TypeScript is a superset of JavaScript that adds static typing, making it easier to develop and maintain large-scale applications.",
+        "ruby": "Ruby is a dynamic, interpreted language mainly used for web development with the Ruby on Rails framework.",
+        "rust": "Rust is a systems programming language focused on safety, concurrency, and performance.",
+        "c#": "C# is a modern, object-oriented language developed by Microsoft, commonly used in game development with Unity and enterprise applications.",
+        "sql": "SQL, or Structured Query Language, is used for managing and querying relational databases.",
+        "r": "R is a language used primarily for statistical computing and data analysis.",
+        "perl": "Perl is a versatile scripting language used for web development, system administration, and text processing."
+    };
+
+    return languages[language] || "I am not familiar with that programming language.";
 }
 
 let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = new speechRecognition();
 recognition.onresult = (event) => {
-    let currentIndex = event.resultIndex;
-    let transcript = event.results[currentIndex][0].transcript;
+    let transcript = event.results[event.resultIndex][0].transcript.toLowerCase();
     content.innerText = transcript;
-    takeCommand(transcript.toLowerCase());
-}
+    takeCommand(transcript);
+};
 
 btn.addEventListener("click", () => {
     recognition.start();
@@ -52,48 +62,23 @@ function takeCommand(message) {
     } else if (message.includes("open google")) {
         speak("Opening Google...");
         window.open("https://google.com/", "_blank");
-    } else if (message.includes("open facebook")) {
-        speak("Opening Facebook...");
-        window.open("https://facebook.com/", "_blank");
-    } else if (message.includes("open instagram")) {
-        speak("Opening Instagram...");
-        window.open("https://instagram.com/", "_blank");
-    } else if (message.includes("open calculator")) {
-        speak("Opening calculator...");
-        window.open("calculator://");
-    } else if (message.includes("open whatsapp")) {
-        speak("Opening WhatsApp...");
-        window.open("whatsapp://");
     } else if (message.includes("time")) {
         let time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
         speak(`The time is ${time}`);
     } else if (message.includes("date")) {
         let date = new Date().toLocaleString(undefined, { day: "numeric", month: "short" });
         speak(`Today's date is ${date}`);
-    } else if (message.includes("weather")) {
-        speak("Fetching weather information...");
-        window.open("https://www.google.com/search?q=weather", "_blank");
-    } else if (message.includes("tell me a joke")) {
-        let jokes = [
-            "Why don't some couples go to the gym? Because some relationships don't work out!",
-            "I'm reading a book on anti-gravity. It's impossible to put down!",
-            "Why don't skeletons fight each other? They don't have the guts!"
-        ];
-        let joke = jokes[Math.floor(Math.random() * jokes.length)];
-        speak(joke);
-    } else if (message.includes("search wikipedia for")) {
-        let searchQuery = message.replace("search wikipedia for", "").trim();
-        speak(`Searching Wikipedia for ${searchQuery}`);
-        window.open(`https://en.wikipedia.org/wiki/${searchQuery}`, "_blank");
-    } else if (message.includes("latest news")) {
-        speak("Fetching the latest news...");
-        window.open("https://news.google.com/", "_blank");
-    } else if (message.includes("play music")) {
-        speak("Playing music on YouTube...");
-        window.open("https://www.youtube.com/results?search_query=relaxing+music", "_blank");
     } else {
-        let finalText = "This is what I found on the internet regarding " + message;
-        speak(finalText);
-        window.open(`https://www.google.com/search?q=${message}`, "_blank");
+        // **Programming Language Detection Using Regular Expressions**
+        let langMatch = message.match(/what is (python|java|javascript|c\+\+|php|go|swift|kotlin|dart|typescript|ruby|rust|c#|sql|r|perl)/);
+        if (langMatch) {
+            let lang = langMatch[1];
+            let info = getProgrammingLanguageInfo(lang);
+            speak(info);
+        } else {
+            let finalText = "This is what I found on the internet regarding " + message;
+            speak(finalText);
+            window.open(`https://www.google.com/search?q=${message}`, "_blank");
+        }
     }
 }

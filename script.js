@@ -5,33 +5,37 @@ let voice = document.querySelector("#voice");
 // Default language set to English
 let currentLanguage = "en";
 
+// DeepSeek API Key
+const API_KEY = "sk-e2fb43231bb44f558212d95edec8d13a";
+
 // Speech synthesis function to speak text
 function speak(text) {
     let text_speak = new SpeechSynthesisUtterance(text);
     text_speak.rate = 1;
     text_speak.pitch = 1;
     text_speak.volume = 1;
-
-    // Check the current language and set it for speech
     text_speak.lang = currentLanguage === "si" ? "si-LK" : "en-US";
-
     window.speechSynthesis.speak(text_speak);
 }
 
-// Function to switch between languages
-function switchLanguage(language) {
-    if (language === "si") {
-        currentLanguage = "si";
-        speak("සිංහල භාෂාවට මාරු වුණා.");
-    } else {
-        currentLanguage = "en";
-        speak("Switched to English.");
+// Fetch response from DeepSeek API (AI Chatbot)
+async function getAIResponse(query) {
+    const url = `https://api.deepseek.ai/ask?query=${encodeURIComponent(query)}&apiKey=${API_KEY}`;
+    
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data.answer || "Sorry, I couldn't find an answer.";
+    } catch (error) {
+        console.error("Error fetching AI response:", error);
+        return "Something went wrong. Please try again.";
     }
 }
 
 // Speech recognition for voice command
 let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = new speechRecognition();
+recognition.lang = "en-US"; // Default language
 recognition.onresult = (event) => {
     let transcript = event.results[event.resultIndex][0].transcript.toLowerCase();
     content.innerText = transcript;
@@ -39,76 +43,51 @@ recognition.onresult = (event) => {
 };
 
 btn.addEventListener("click", () => {
+    recognition.lang = currentLanguage === "si" ? "si-LK" : "en-US"; // Set language before starting
     recognition.start();
     voice.style.display = "block";
     btn.style.display = "none";
 });
 
-// Handle the voice commands
-function takeCommand(message) {
+// Handle voice commands and AI responses
+async function takeCommand(message) {
     voice.style.display = "none";
     btn.style.display = "flex";
 
-    // Language switch commands
-    if (message.includes("සිංහලට මාරු වෙන්න")) {
+    // **Language Switching**
+    if (message.includes("sinhalaට මාරු කරන්න")) {
         switchLanguage("si");
-    } else if (message.includes("ඉංග්‍රීසිට මාරු වෙන්න")) {
+    } else if (message.includes("switch to english")) {
         switchLanguage("en");
     }
 
-    // Handle common phrases and queries
+    // **Common Voice Commands**
     else if (message.includes("hello") || message.includes("hey")) {
         speak(currentLanguage === "si" ? "ඔයාට හෙලෝ, මට උදව් කරනවද?" : "Hello Sir, what can I help you?");
-    } else if (message.includes("what are you") || message.includes("ඔබ කවුද")) {
-        speak(currentLanguage === "si" ? "මම NHB LK සමාගම විසින් නිර්මාණය කළ කෘතිම බුද්ධි සහායකයෙක්." : "I am a virtual assistant, created by NHB LK COMPANY.");
-    } else if (message.includes("open youtube") || message.includes("යූ ටියුබ් ඇරිය")) {
-        speak(currentLanguage === "si" ? "YouTube විවෘත කරනවා..." : "Opening YouTube...");
+    } else if (message.includes("what are you")) {
+        speak(currentLanguage === "si" ? "මම NHB LK සමාගම විසින් නිර්මාණය කළ AI සහායකයෙක්." : "I am an AI assistant, created by NHB LK COMPANY.");
+    } else if (message.includes("open youtube")) {
+        speak(currentLanguage === "si" ? "YouTube විවෘත කිරීම..." : "Opening YouTube...");
         window.open("https://youtube.com/", "_blank");
-    } else if (message.includes("open google") || message.includes("ගූගල් ඇරිය")) {
-        speak(currentLanguage === "si" ? "Google විවෘත කරනවා..." : "Opening Google...");
+    } else if (message.includes("open google")) {
+        speak(currentLanguage === "si" ? "Google විවෘත කිරීම..." : "Opening Google...");
         window.open("https://google.com/", "_blank");
-    } else if (message.includes("time") || message.includes("වෙලාව")) {
+    } else if (message.includes("time")) {
         let time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
-        speak(currentLanguage === "si" ? `දැන් වෙලාව ${time} ය.` : `The time is ${time}`);
-    } else if (message.includes("date") || message.includes("දිනය")) {
+        speak(currentLanguage === "si" ? `කාලය ${time} වේ.` : `The time is ${time}`);
+    } else if (message.includes("date")) {
         let date = new Date().toLocaleString(undefined, { day: "numeric", month: "short" });
         speak(currentLanguage === "si" ? `අද දිනය ${date} වේ.` : `Today's date is ${date}`);
     } else {
-        // **Programming Language Detection Using Regular Expressions**
-        let langMatch = message.match(/what is (python|java|javascript|c\+\+|php|go|swift|kotlin|dart|typescript|ruby|rust|c#|sql|r|perl)/);
-        if (langMatch) {
-            let lang = langMatch[1];
-            let info = getProgrammingLanguageInfo(lang);
-            speak(currentLanguage === "si" ? `මෙය ${lang} පිළිබඳවයි: ${info}` : info);
-        } else {
-            // Google search for unrecognized queries
-            let finalText = currentLanguage === "si" ? `මට මෙය ගැන අන්තර්ජාලයෙන් සොයාගන්න හැකි වුණා.` : "This is what I found on the internet regarding " + message;
-            speak(finalText);
-            window.open(`https://www.google.com/search?q=${message}`, "_blank");
-        }
+        // **AI Chatbot Response Using DeepSeek API**
+        let aiResponse = await getAIResponse(message);
+        speak(aiResponse);
     }
 }
 
-// Programming language related responses
-function getProgrammingLanguageInfo(language) {
-    const languages = {
-        "python": "Python is a popular programming language known for its simplicity and readability. It is widely used in web development, data science, and AI.",
-        "java": "Java is a high-level, object-oriented programming language used in enterprise applications, Android development, and backend services.",
-        "javascript": "JavaScript is a versatile programming language primarily used for web development, enabling dynamic and interactive websites.",
-        "c++": "C++ is a powerful programming language commonly used in game development, system programming, and high-performance applications.",
-        "php": "PHP is a server-side scripting language widely used for web development and content management systems like WordPress.",
-        "go": "Go, also known as Golang, is a statically typed programming language developed by Google, known for its efficiency and concurrency support.",
-        "swift": "Swift is Apple's programming language designed for developing iOS, macOS, watchOS, and tvOS applications.",
-        "kotlin": "Kotlin is a modern programming language that runs on the Java Virtual Machine and is widely used for Android app development.",
-        "dart": "Dart is a programming language developed by Google, mainly used for building cross-platform mobile applications using Flutter.",
-        "typescript": "TypeScript is a superset of JavaScript that adds static typing, making it easier to develop and maintain large-scale applications.",
-        "ruby": "Ruby is a dynamic, interpreted language mainly used for web development with the Ruby on Rails framework.",
-        "rust": "Rust is a systems programming language focused on safety, concurrency, and performance.",
-        "c#": "C# is a modern, object-oriented language developed by Microsoft, commonly used in game development with Unity and enterprise applications.",
-        "sql": "SQL, or Structured Query Language, is used for managing and querying relational databases.",
-        "r": "R is a language used primarily for statistical computing and data analysis.",
-        "perl": "Perl is a versatile scripting language used for web development, system administration, and text processing."
-    };
-
-    return languages[language] || (currentLanguage === "si" ? "මට මේ භාෂාව ගැන වැඩිදුර දැනුමක් නැහැ." : "I am not familiar with that programming language.");
+// Function to switch between Sinhala and English
+function switchLanguage(language) {
+    currentLanguage = language;
+    recognition.lang = language === "si" ? "si-LK" : "en-US"; // Update speech recognition language
+    speak(language === "si" ? "සිංහලට මාරු කළා." : "Switched to English.");
 }

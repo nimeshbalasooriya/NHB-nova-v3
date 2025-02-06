@@ -2,6 +2,8 @@ let btn = document.querySelector("#btn");
 let content = document.querySelector("#content");
 let voice = document.querySelector("#voice");
 
+let userName = '';
+
 // Speech synthesis function to speak text
 function speak(text) {
     let text_speak = new SpeechSynthesisUtterance(text);
@@ -38,6 +40,7 @@ function getProgrammingLanguageInfo(language) {
 
 let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = new speechRecognition();
+
 recognition.onresult = (event) => {
     let transcript = event.results[event.resultIndex][0].transcript.toLowerCase();
     content.innerText = transcript;
@@ -56,9 +59,19 @@ function takeCommand(message) {
 
     // Handle common phrases and queries
     if (message.includes("hello") || message.includes("hey")) {
-        speak("Hello Sir, what can I help you?");
+        if (userName) {
+            speak(`Hello ${userName}, what can I help you with today?`);
+        } else {
+            speak("Hello, what can I help you with today?");
+        }
     } else if (message.includes("what are you")) {
         speak("I am a virtual assistant, created by NHB LK COMPANY.");
+    } else if (message.includes("what is your name")) {
+        speak(`My name is Nova, your virtual assistant.`);
+    } else if (message.includes("my name is")) {
+        let name = message.replace("my name is", "").trim();
+        userName = name;
+        speak(`Nice to meet you, ${userName}!`);
     } else if (message.includes("open youtube")) {
         speak("Opening YouTube...");
         window.open("https://youtube.com/", "_blank");
@@ -71,8 +84,20 @@ function takeCommand(message) {
     } else if (message.includes("date")) {
         let date = new Date().toLocaleString(undefined, { day: "numeric", month: "short" });
         speak(`Today's date is ${date}`);
+    } else if (message.includes("tell me a joke")) {
+        speak("Why don’t skeletons fight each other? They don’t have the guts.");
+    } else if (message.includes("weather")) {
+        // You can replace this with an API for real-time weather data
+        speak("The current weather is sunny with a temperature of 25°C.");
+    } else if (message.includes("play music")) {
+        speak("Playing music on YouTube...");
+        window.open("https://youtube.com/results?search_query=music", "_blank");
+    } else if (message.includes("search for")) {
+        let query = message.replace("search for", "").trim();
+        speak(`Searching for ${query} on Google.`);
+        window.open(`https://www.google.com/search?q=${query}`, "_blank");
     } else {
-        // **Programming Language Detection Using Regular Expressions**
+        // Programming Language Detection Using Regular Expressions
         let langMatch = message.match(/what is (python|java|javascript|c\+\+|php|go|swift|kotlin|dart|typescript|ruby|rust|c#|sql|r|perl)/);
         if (langMatch) {
             let lang = langMatch[1];

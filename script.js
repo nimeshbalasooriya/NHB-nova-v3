@@ -2,7 +2,8 @@ let btn = document.querySelector("#btn");
 let content = document.querySelector("#content");
 let voice = document.querySelector("#voice");
 
-let userName = '';
+// Default language set to English
+let currentLanguage = "en";
 
 // Speech synthesis function to speak text
 function speak(text) {
@@ -10,7 +11,14 @@ function speak(text) {
     text_speak.rate = 1;
     text_speak.pitch = 1;
     text_speak.volume = 1;
-    text_speak.lang = "en-us";
+
+    // Check the current language and set it for speech
+    if (currentLanguage === "si") {
+        text_speak.lang = "si-LK"; // Sinhala language
+    } else {
+        text_speak.lang = "en-US"; // English language
+    }
+
     window.speechSynthesis.speak(text_speak);
 }
 
@@ -38,9 +46,9 @@ function getProgrammingLanguageInfo(language) {
     return languages[language] || "I am not familiar with that programming language.";
 }
 
+// Speech recognition for voice command
 let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = new speechRecognition();
-
 recognition.onresult = (event) => {
     let transcript = event.results[event.resultIndex][0].transcript.toLowerCase();
     content.innerText = transcript;
@@ -53,61 +61,58 @@ btn.addEventListener("click", () => {
     btn.style.display = "none";
 });
 
+// Handle the voice commands
 function takeCommand(message) {
     voice.style.display = "none";
     btn.style.display = "flex";
 
+    // Switch language command
+    if (message.includes("switch to sinhala")) {
+        switchLanguage("si");
+    } else if (message.includes("switch to english")) {
+        switchLanguage("en");
+    }
+
     // Handle common phrases and queries
-    if (message.includes("hello") || message.includes("hey")) {
-        if (userName) {
-            speak(`Hello ${userName}, what can I help you with today?`);
-        } else {
-            speak("Hello, what can I help you with today?");
-        }
+    else if (message.includes("hello") || message.includes("hey")) {
+        speak(currentLanguage === "si" ? "හෙලෝ,සර්?" : "Hello Sir, what can I help you?");
     } else if (message.includes("what are you")) {
-        speak("I am a virtual assistant, created by NHB LK COMPANY.");
-    } else if (message.includes("what is your name")) {
-        speak(`My name is Nova, your virtual assistant.`);
-    } else if (message.includes("my name is")) {
-        let name = message.replace("my name is", "").trim();
-        userName = name;
-        speak(`Nice to meet you, ${userName}!`);
+        speak(currentLanguage === "si" ? "මම NHB LK සමාගම විසින් නිර්මාණය කළ කෘතිම බුද්ධි සහායකයෙක්." : "I am a virtual assistant, created by NHB LK COMPANY.");
     } else if (message.includes("open youtube")) {
-        speak("Opening YouTube...");
+        speak(currentLanguage === "si" ? "YouTube විවෘත කිරීම..." : "Opening YouTube...");
         window.open("https://youtube.com/", "_blank");
     } else if (message.includes("open google")) {
-        speak("Opening Google...");
+        speak(currentLanguage === "si" ? "Google විවෘත කිරීම..." : "Opening Google...");
         window.open("https://google.com/", "_blank");
     } else if (message.includes("time")) {
         let time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
-        speak(`The time is ${time}`);
+        speak(currentLanguage === "si" ? `කාලය ${time} වේ.` : `The time is ${time}`);
     } else if (message.includes("date")) {
         let date = new Date().toLocaleString(undefined, { day: "numeric", month: "short" });
-        speak(`Today's date is ${date}`);
-    } else if (message.includes("tell me a joke")) {
-        speak("Why don’t skeletons fight each other? They don’t have the guts.");
-    } else if (message.includes("weather")) {
-        // You can replace this with an API for real-time weather data
-        speak("The current weather is sunny with a temperature of 25°C.");
-    } else if (message.includes("play music")) {
-        speak("Playing music on YouTube...");
-        window.open("https://youtube.com/results?search_query=music", "_blank");
-    } else if (message.includes("search for")) {
-        let query = message.replace("search for", "").trim();
-        speak(`Searching for ${query} on Google.`);
-        window.open(`https://www.google.com/search?q=${query}`, "_blank");
+        speak(currentLanguage === "si" ? `අද දිනය ${date} වේ.` : `Today's date is ${date}`);
     } else {
-        // Programming Language Detection Using Regular Expressions
+        // **Programming Language Detection Using Regular Expressions**
         let langMatch = message.match(/what is (python|java|javascript|c\+\+|php|go|swift|kotlin|dart|typescript|ruby|rust|c#|sql|r|perl)/);
         if (langMatch) {
             let lang = langMatch[1];
             let info = getProgrammingLanguageInfo(lang);
-            speak(info);
+            speak(currentLanguage === "si" ? `මෙය ${lang} පිළිබඳවයි: ${info}` : info);
         } else {
             // Google search for unrecognized queries
-            let finalText = "This is what I found on the internet regarding " + message;
+            let finalText = currentLanguage === "si" ? `මෙය මට ඉන්ටර්නෙට් එකේ පිළිබඳව සෙවූ සටහනයි.` : "This is what I found on the internet regarding " + message;
             speak(finalText);
             window.open(`https://www.google.com/search?q=${message}`, "_blank");
         }
+    }
+}
+
+// Function to switch between languages
+function switchLanguage(language) {
+    if (language === "si") {
+        currentLanguage = "si"; // Switch to Sinhala
+        speak(currentLanguage === "si" ? "සිංහල භාෂාවට මාරු කරන ලදී." : "Switched to Sinhala.");
+    } else {
+        currentLanguage = "en"; // Switch to English
+        speak(currentLanguage === "en" ? "Switched to English." : "Switching to English.");
     }
 }

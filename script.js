@@ -13,13 +13,80 @@ function speak(text) {
     text_speak.volume = 1;
 
     // Check the current language and set it for speech
-    if (currentLanguage === "si") {
-        text_speak.lang = "si-LK"; // Sinhala language
-    } else {
-        text_speak.lang = "en-US"; // English language
-    }
+    text_speak.lang = currentLanguage === "si" ? "si-LK" : "en-US";
 
     window.speechSynthesis.speak(text_speak);
+}
+
+// Function to switch between languages
+function switchLanguage(language) {
+    if (language === "si") {
+        currentLanguage = "si";
+        speak("සිංහල භාෂාවට මාරු වුණා.");
+    } else {
+        currentLanguage = "en";
+        speak("Switched to English.");
+    }
+}
+
+// Speech recognition for voice command
+let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = new speechRecognition();
+recognition.onresult = (event) => {
+    let transcript = event.results[event.resultIndex][0].transcript.toLowerCase();
+    content.innerText = transcript;
+    takeCommand(transcript);
+};
+
+btn.addEventListener("click", () => {
+    recognition.start();
+    voice.style.display = "block";
+    btn.style.display = "none";
+});
+
+// Handle the voice commands
+function takeCommand(message) {
+    voice.style.display = "none";
+    btn.style.display = "flex";
+
+    // Language switch commands
+    if (message.includes("සිංහලට මාරු වෙන්න")) {
+        switchLanguage("si");
+    } else if (message.includes("ඉංග්‍රීසිට මාරු වෙන්න")) {
+        switchLanguage("en");
+    }
+
+    // Handle common phrases and queries
+    else if (message.includes("hello") || message.includes("hey")) {
+        speak(currentLanguage === "si" ? "ඔයාට හෙලෝ, මට උදව් කරනවද?" : "Hello Sir, what can I help you?");
+    } else if (message.includes("what are you") || message.includes("ඔබ කවුද")) {
+        speak(currentLanguage === "si" ? "මම NHB LK සමාගම විසින් නිර්මාණය කළ කෘතිම බුද්ධි සහායකයෙක්." : "I am a virtual assistant, created by NHB LK COMPANY.");
+    } else if (message.includes("open youtube") || message.includes("යූ ටියුබ් ඇරිය")) {
+        speak(currentLanguage === "si" ? "YouTube විවෘත කරනවා..." : "Opening YouTube...");
+        window.open("https://youtube.com/", "_blank");
+    } else if (message.includes("open google") || message.includes("ගූගල් ඇරිය")) {
+        speak(currentLanguage === "si" ? "Google විවෘත කරනවා..." : "Opening Google...");
+        window.open("https://google.com/", "_blank");
+    } else if (message.includes("time") || message.includes("වෙලාව")) {
+        let time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
+        speak(currentLanguage === "si" ? `දැන් වෙලාව ${time} ය.` : `The time is ${time}`);
+    } else if (message.includes("date") || message.includes("දිනය")) {
+        let date = new Date().toLocaleString(undefined, { day: "numeric", month: "short" });
+        speak(currentLanguage === "si" ? `අද දිනය ${date} වේ.` : `Today's date is ${date}`);
+    } else {
+        // **Programming Language Detection Using Regular Expressions**
+        let langMatch = message.match(/what is (python|java|javascript|c\+\+|php|go|swift|kotlin|dart|typescript|ruby|rust|c#|sql|r|perl)/);
+        if (langMatch) {
+            let lang = langMatch[1];
+            let info = getProgrammingLanguageInfo(lang);
+            speak(currentLanguage === "si" ? `මෙය ${lang} පිළිබඳවයි: ${info}` : info);
+        } else {
+            // Google search for unrecognized queries
+            let finalText = currentLanguage === "si" ? `මට මෙය ගැන අන්තර්ජාලයෙන් සොයාගන්න හැකි වුණා.` : "This is what I found on the internet regarding " + message;
+            speak(finalText);
+            window.open(`https://www.google.com/search?q=${message}`, "_blank");
+        }
+    }
 }
 
 // Programming language related responses
@@ -43,76 +110,5 @@ function getProgrammingLanguageInfo(language) {
         "perl": "Perl is a versatile scripting language used for web development, system administration, and text processing."
     };
 
-    return languages[language] || "I am not familiar with that programming language.";
-}
-
-// Speech recognition for voice command
-let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognition = new speechRecognition();
-recognition.onresult = (event) => {
-    let transcript = event.results[event.resultIndex][0].transcript.toLowerCase();
-    content.innerText = transcript;
-    takeCommand(transcript);
-};
-
-btn.addEventListener("click", () => {
-    recognition.start();
-    voice.style.display = "block";
-    btn.style.display = "none";
-});
-
-// Handle the voice commands
-function takeCommand(message) {
-    voice.style.display = "none";
-    btn.style.display = "flex";
-
-    // Switch language command
-    if (message.includes("switch to sinhala")) {
-        switchLanguage("si");
-    } else if (message.includes("switch to english")) {
-        switchLanguage("en");
-    }
-
-    // Handle common phrases and queries
-    else if (message.includes("hello") || message.includes("hey")) {
-        speak(currentLanguage === "si" ? "හෙලෝ,සර්?" : "Hello Sir, what can I help you?");
-    } else if (message.includes("what are you")) {
-        speak(currentLanguage === "si" ? "මම NHB LK සමාගම විසින් නිර්මාණය කළ කෘතිම බුද්ධි සහායකයෙක්." : "I am a virtual assistant, created by NHB LK COMPANY.");
-    } else if (message.includes("open youtube")) {
-        speak(currentLanguage === "si" ? "YouTube විවෘත කිරීම..." : "Opening YouTube...");
-        window.open("https://youtube.com/", "_blank");
-    } else if (message.includes("open google")) {
-        speak(currentLanguage === "si" ? "Google විවෘත කිරීම..." : "Opening Google...");
-        window.open("https://google.com/", "_blank");
-    } else if (message.includes("time")) {
-        let time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
-        speak(currentLanguage === "si" ? `කාලය ${time} වේ.` : `The time is ${time}`);
-    } else if (message.includes("date")) {
-        let date = new Date().toLocaleString(undefined, { day: "numeric", month: "short" });
-        speak(currentLanguage === "si" ? `අද දිනය ${date} වේ.` : `Today's date is ${date}`);
-    } else {
-        // **Programming Language Detection Using Regular Expressions**
-        let langMatch = message.match(/what is (python|java|javascript|c\+\+|php|go|swift|kotlin|dart|typescript|ruby|rust|c#|sql|r|perl)/);
-        if (langMatch) {
-            let lang = langMatch[1];
-            let info = getProgrammingLanguageInfo(lang);
-            speak(currentLanguage === "si" ? `මෙය ${lang} පිළිබඳවයි: ${info}` : info);
-        } else {
-            // Google search for unrecognized queries
-            let finalText = currentLanguage === "si" ? `මෙය මට ඉන්ටර්නෙට් එකේ පිළිබඳව සෙවූ සටහනයි.` : "This is what I found on the internet regarding " + message;
-            speak(finalText);
-            window.open(`https://www.google.com/search?q=${message}`, "_blank");
-        }
-    }
-}
-
-// Function to switch between languages
-function switchLanguage(language) {
-    if (language === "si") {
-        currentLanguage = "si"; // Switch to Sinhala
-        speak(currentLanguage === "si" ? "සිංහල භාෂාවට මාරු කරන ලදී." : "Switched to Sinhala.");
-    } else {
-        currentLanguage = "en"; // Switch to English
-        speak(currentLanguage === "en" ? "Switched to English." : "Switching to English.");
-    }
+    return languages[language] || (currentLanguage === "si" ? "මට මේ භාෂාව ගැන වැඩිදුර දැනුමක් නැහැ." : "I am not familiar with that programming language.");
 }

@@ -1,6 +1,6 @@
 let btn = document.querySelector("#btn");
 let content = document.querySelector("#content");
-let voice = document.querySelector("#voice");
+let languageBtn = document.querySelector("#languageBtn");
 
 // Default language set to English
 let currentLanguage = "en";
@@ -23,11 +23,18 @@ function switchLanguage(language) {
     if (language === "si") {
         currentLanguage = "si";
         speak("සිංහල භාෂාවට මාරු වුණා.");
+        languageBtn.innerText = "Switch to English"; // Update button text
     } else {
         currentLanguage = "en";
         speak("Switched to English.");
+        languageBtn.innerText = "Switch to Sinhala"; // Update button text
     }
 }
+
+// Event listener for language switch
+languageBtn.addEventListener("click", () => {
+    switchLanguage(currentLanguage === "en" ? "si" : "en");
+});
 
 // Speech recognition for voice command
 let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -40,24 +47,22 @@ recognition.onresult = (event) => {
 
 btn.addEventListener("click", () => {
     recognition.start();
-    voice.style.display = "block";
-    btn.style.display = "none";
+    btn.style.display = "none"; // Hide the button while listening
 });
 
 // Handle the voice commands
 function takeCommand(message) {
-    voice.style.display = "none";
-    btn.style.display = "flex";
+    btn.style.display = "flex"; // Show the button again
 
-    // Language switch commands
-    if (message.includes("සිංහලට මාරු වෙන්න")) {
+    // Language switch commands (via voice)
+    if (message.includes("switch to sinhala")) {
         switchLanguage("si");
-    } else if (message.includes("ඉංග්‍රීසිට මාරු වෙන්න")) {
+    } else if (message.includes("switch to english")) {
         switchLanguage("en");
     }
 
     // Handle common phrases and queries
-    else if (message.includes("hello") || message.includes("hey")) {
+    if (message.includes("hello") || message.includes("hey")) {
         speak(currentLanguage === "si" ? "ඔයාට හෙලෝ, මට උදව් කරනවද?" : "Hello Sir, what can I help you?");
     } else if (message.includes("what are you") || message.includes("ඔබ කවුද")) {
         speak(currentLanguage === "si" ? "මම NHB LK සමාගම විසින් නිර්මාණය කළ කෘතිම බුද්ධි සහායකයෙක්." : "I am a virtual assistant, created by NHB LK COMPANY.");
@@ -131,9 +136,8 @@ function getCountryInfo(country) {
         "japan": "Japan is an island nation in East Asia, known for its advanced technology, rich cultural heritage, and influence in global pop culture.",
         "germany": "Germany is a country in Central Europe, known for its engineering, automotive industry, and strong economy.",
         "france": "France is a country in Western Europe, famous for its art, culture, fashion, and history.",
-        "uk": "The United Kingdom is a sovereign country located in Europe, known for its monarchy, historical landmarks, and global influence.",
-        "australia": "Australia is a country and continent known for its natural wonders, beautiful beaches, and unique wildlife."
+        "uk": "The United Kingdom is a sovereign country located in Europe."
     };
 
-    return countries[country] || (currentLanguage === "si" ? "මෙම රට ගැන මට තොරතුරු නැහැ." : "I don't have information on this country.");
-    }
+    return countries[country] || "I don't have information on this country.";
+}

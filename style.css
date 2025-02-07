@@ -18,7 +18,7 @@ body {
 }
 
 #logo {
-    width: 40vw;
+    width: 20vw;
 }
 
 h1 {
@@ -37,37 +37,37 @@ h1 {
 }
 
 #voice {
-    width: 300px;
+    width: 200px;
     display: none;
 }
 
 #btn {
     width: 100%;
     background: linear-gradient(to right, rgb(21, 145, 207), rgb(201, 41, 116)); /* Blue to Pink Gradient */
-    padding: 10px;
+    padding: 8px 12px; /* Reduced padding for smaller button size */
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    font-size: 10px;
-    border-radius: 10px;
+    font-size: 18px; /* Reduced font size for the button text */
+    border-radius: 20px;
     color: white;
-    box-shadow: 1px 1px 10px rgb(21, 145, 207), 2px 2px 10px rgb(201, 41, 116);
+    box-shadow: 2px 2px 10px rgb(21, 145, 207), 2px 2px 10px rgb(201, 41, 116);
     border: none;
     transition: all 0.5s;
 }
 
 #btn:hover {
-    box-shadow: 1px 1px 10px rgb(21, 145, 207), 1px 1px 10px rgb(201, 41, 116);
+    box-shadow: 2px 2px 20px rgb(21, 145, 207), 2px 2px 20px rgb(201, 41, 116);
     letter-spacing: 2px;
 }
 
 /* Pink Button Theme */
 #languageBtn {
     background: linear-gradient(to right, rgb(255, 20, 147), rgb(255, 105, 180)); /* Pink Gradient */
-    padding: 10px 10px;
+    padding: 10px 20px;
     font-size: 18px;
-    border-radius: 20px;
+    border-radius: 25px;
     color: white;
     border: none;
     box-shadow: 2px 2px 10px rgba(255, 20, 147, 0.5), 2px 2px 10px rgba(255, 105, 180, 0.5);

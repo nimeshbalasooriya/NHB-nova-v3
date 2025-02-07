@@ -44,12 +44,12 @@ h1 {
 #btn {
     width: 100%;
     background: linear-gradient(to right, rgb(21, 145, 207), rgb(201, 41, 116)); /* Blue to Pink Gradient */
-    padding: 8px 12px; /* Reduced padding for smaller button size */
+    padding: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    font-size: 18px; /* Reduced font size for the button text */
+    font-size: 20px;
     border-radius: 20px;
     color: white;
     box-shadow: 2px 2px 10px rgb(21, 145, 207), 2px 2px 10px rgb(201, 41, 116);

@@ -49,8 +49,8 @@ h1 {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    font-size: 20px;
-    border-radius: 20px;
+    font-size: 10px;
+    border-radius: 10px;
     color: white;
     box-shadow: 2px 2px 10px rgb(21, 145, 207), 2px 2px 10px rgb(201, 41, 116);
     border: none;

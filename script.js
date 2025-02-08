@@ -7,7 +7,7 @@ function speak(text){
     text_speak.rate=1
     text_speak.pitch=1
     text_speak.volume=1
-    text_speak.lang="en-GB"
+    text_speak.lang="eg-uk"
     window.speechSynthesis.speak(text_speak)
 }
 

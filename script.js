@@ -92,26 +92,20 @@ if (speechRecognition) {
         recognition.start();
         voice.style.display = "block";
         btn.style.display = "none";
+        btn.remove(); // This will remove the button after clicking
     });
 } else {
     alert("Speech Recognition API is not supported by your browser.");
 }
 
-// Function to handle voice commands and provide suggestions
+// Function to handle voice commands
 function takeCommand(message) {
     voice.style.display = "none";
     btn.style.display = "flex";
 
-    // Basic voice command suggestions
-    const suggestions = [
-        "You can ask about 'Programming languages', 'Country information', or 'Technology companies'.",
-        "Try saying 'Tell me about Python' or 'What is the capital of Sri Lanka?'"
-    ];
-
     // Hello command
     if (message.includes("hello") || message.includes("hey")) {
-        speak("Hello sir, what can I help you?");
-        speak(suggestions[0]);  // Provide suggestion
+        speak("hello sir, what can I help you?");
     }
     // Programming languages details
     else if (message.includes("python") || message.includes("javascript") || message.includes("java") || message.includes("c") || message.includes("ruby")) {
@@ -121,7 +115,6 @@ function takeCommand(message) {
         } else {
             speak("Sorry, I don't have information on that programming language.");
         }
-        speak(suggestions[1]);  // Provide suggestion
     }
     // Countries details
     else if (message.includes("sri lanka") || message.includes("united states") || message.includes("japan") || message.includes("india") || message.includes("germany")) {
@@ -131,7 +124,6 @@ function takeCommand(message) {
         } else {
             speak("Sorry, I don't have information on that country.");
         }
-        speak(suggestions[1]);  // Provide suggestion
     }
     // Technology companies details
     else if (message.includes("apple") || message.includes("microsoft") || message.includes("google") || message.includes("amazon") || message.includes("tesla")) {
@@ -141,7 +133,6 @@ function takeCommand(message) {
         } else {
             speak("Sorry, I don't have information on that company.");
         }
-        speak(suggestions[1]);  // Provide suggestion
     }
     // Presidents details
     else if (message.includes("president of")) {
@@ -151,12 +142,10 @@ function takeCommand(message) {
         } else {
             speak("Sorry, I don't have information on that president.");
         }
-        speak(suggestions[1]);  // Provide suggestion
     }
-    // General commands
+    // Existing commands
     else if (message.includes("who are you")) {
         speak("I am a voice assistant created by NHB LK Company.");
-        speak(suggestions[0]);  // Provide suggestion
     }
     else if (message.includes("open youtube")) {
         speak("Opening YouTube...");
@@ -178,6 +167,5 @@ function takeCommand(message) {
         let finalText = "This is what I found on the internet regarding " + message || message;
         speak(finalText);
         window.open(`https://www.google.com/search?q=${message}`, "_blank");
-        speak(suggestions[0]);  // Provide suggestion
     }
 }

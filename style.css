@@ -1,119 +1,93 @@
-/* Reset styles */
-* {
+@import url('https://fonts.googleapis.com/css2?family=Protest+Guerrilla&display=swap');
+
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
-/* General body styles */
-body {
-    font-family: 'Arial', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f4f4f9;
-    color: #333;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Dark mode */
-body.dark-mode {
-    background-color: #2f2f2f;
-    color: white;
-}
-
-/* Container for all elements */
-.container {
-    text-align: center;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 40px;
+body{
     width: 100%;
-    max-width: 400px;
-    transition: background-color 0.3s ease;
+    height: 100%;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:30px;
+    flex-direction: column;
+}
+#logo{
+    width: 20vw;
+}
+h1{
+    color: aliceblue;
+    font-family: "Protest Guerrilla", sans-serif;
+}
+#name{
+    color:rgb(212, 43, 122);
+    font-size: 45px;
+}
+#va{
+    color:rgb(43, 206, 212);
+    font-size: 45px; 
+}
+#voice{
+    width: 500px;
+    display: none;
+   
+}
+#btn{
+width: 100%;
+background: linear-gradient(to right,rgb(21, 145, 207),rgb(201, 41, 116));
+padding: 10px;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+font-size: 20px;
+border-radius: 20px;
+color: white;
+box-shadow: 2px 2px 10px rgb(21, 145, 207),2px 2px 10px rgb(201, 41, 116);
+border: none;
+transition: all 0.5s;
+counter-increment: ;
+}
+#btn:hover{
+    box-shadow: 2px 2px 20px rgb(21, 145, 207),2px 2px 20px rgb(201, 41, 116);
+    letter-spacing: 2px;
+}
+/* Login Page Styles */
+.login-container {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px gray;
+    width: 300px;
+    margin: auto;
+    margin-top: 100px;
 }
 
-/* Dark mode for the container */
-body.dark-mode .container {
-    background: #3d3d3d;
-}
-
-/* Content text */
-#content {
-    font-size: 20px;
-    font-weight: 500;
-    margin-bottom: 30px;
-    color: #555;
-}
-
-/* Buttons styling */
-button {
-    padding: 16px 32px;
-    font-size: 18px;
-    cursor: pointer;
+.login-container input {
+    display: block;
+    width: 100%;
     margin: 10px 0;
-    border: none;
-    border-radius: 8px;
-    outline: none;
-    background-color: #4caf50;
+    padding: 10px;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: rgb(21, 145, 207);
     color: white;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    border: none;
+    cursor: pointer;
 }
 
-/* Dark mode button styling */
-body.dark-mode button {
-    background-color: #6a6a6a;
-}
-
-/* Button hover effects */
-button:hover {
-    background-color: #45a049;
-    transform: translateY(-2px);
-}
-
-/* Button active effect */
-button:active {
-    transform: translateY(1px);
-}
-
-/* Dark mode button active */
-body.dark-mode button:active {
-    background-color: #555;
-}
-
-/* Button focus effect */
-button:focus {
-    outline: 2px solid #2196f3;
-}
-
-/* Language toggle button */
-#languageBtn {
-    background-color: #2196f3;
-}
-
-#languageBtn:hover {
-    background-color: #1976d2;
-}
-
-/* Theme toggle button */
-#themeBtn {
-    background-color: #ff5722;
-}
-
-#themeBtn:hover {
-    background-color: #e64a19;
-}
-
-/* Responsive design */
-@media (max-width: 500px) {
-    .container {
-        padding: 20px;
-        width: 90%;
-    }
-
-    button {
-        font-size: 16px;
-    }
+#logoutBtn {
+    margin-top: 20px;
+    background-color: red;
+    padding: 10px;
+    color: white;
+    border: none;
+    cursor: pointer;
 }

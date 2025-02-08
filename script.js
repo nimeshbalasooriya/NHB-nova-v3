@@ -1,6 +1,4 @@
-let btn = document.createElement("button");
-btn.textContent = "NOVA C1";
-document.body.appendChild(btn);
+
 
 let content = document.createElement("div");
 content.textContent = "Say something...";

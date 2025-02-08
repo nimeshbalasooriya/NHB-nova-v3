@@ -2,6 +2,25 @@ let btn = document.querySelector("#btn");
 let content = document.querySelector("#content");
 let voice = document.querySelector("#voice");
 
+// Dataset for programming languages
+const programmingLanguages = [
+    { language: "Python", description: "Python is an interpreted, high-level programming language for general-purpose programming. It emphasizes readability and simplicity." },
+    { language: "JavaScript", description: "JavaScript is a high-level, just-in-time compiled programming language that is widely used for building interactive websites." },
+    { language: "Java", description: "Java is a high-level, class-based, object-oriented programming language designed to have as few implementation dependencies as possible." },
+    { language: "C", description: "C is a general-purpose, procedural programming language that is widely used for system programming and embedded systems." },
+    { language: "Ruby", description: "Ruby is an interpreted, high-level, general-purpose programming language known for its simplicity and productivity." }
+];
+
+// Dataset for countries
+const countries = [
+    { country: "Sri Lanka", capital: "Colombo", population: "21.7 million", language: "Sinhala, Tamil", currency: "Sri Lankan Rupee" },
+    { country: "United States", capital: "Washington, D.C.", population: "331 million", language: "English", currency: "US Dollar" },
+    { country: "Japan", capital: "Tokyo", population: "126.3 million", language: "Japanese", currency: "Yen" },
+    { country: "India", capital: "New Delhi", population: "1.38 billion", language: "Hindi, English", currency: "Indian Rupee" },
+    { country: "Germany", capital: "Berlin", population: "83 million", language: "German", currency: "Euro" }
+];
+
+// Function to speak text
 function speak(text) {
     let text_speak = new SpeechSynthesisUtterance(text);
     text_speak.rate = 1;
@@ -11,6 +30,7 @@ function speak(text) {
     window.speechSynthesis.speak(text_speak);
 }
 
+// Function to wish the user based on the time of day
 function wishMe() {
     let day = new Date();
     let hours = day.getHours();
@@ -24,6 +44,7 @@ function wishMe() {
     }
 }
 
+// Voice recognition setup
 let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 if (speechRecognition) {
     let recognition = new speechRecognition();
@@ -43,15 +64,36 @@ if (speechRecognition) {
     alert("Speech Recognition API is not supported by your browser.");
 }
 
+// Function to handle voice commands
 function takeCommand(message) {
     voice.style.display = "none";
     btn.style.display = "flex";
-    
+
+    // Hello command
     if (message.includes("hello") || message.includes("hey")) {
         speak("hello sir, what can I help you?");
     }
+    // Programming languages details
+    else if (message.includes("python") || message.includes("javascript") || message.includes("java") || message.includes("c") || message.includes("ruby")) {
+        const language = programmingLanguages.find(lang => message.includes(lang.language.toLowerCase()));
+        if (language) {
+            speak(`${language.language}: ${language.description}`);
+        } else {
+            speak("Sorry, I don't have information on that programming language.");
+        }
+    }
+    // Countries details
+    else if (message.includes("sri lanka") || message.includes("united states") || message.includes("japan") || message.includes("india") || message.includes("germany")) {
+        const country = countries.find(item => message.includes(item.country.toLowerCase()));
+        if (country) {
+            speak(`${country.country} - Capital: ${country.capital}, Population: ${country.population}, Language: ${country.language}, Currency: ${country.currency}`);
+        } else {
+            speak("Sorry, I don't have information on that country.");
+        }
+    }
+    // Existing commands
     else if (message.includes("who are you")) {
-        speak("I am sri lnaka voice assistant creted by NHB lk company .");
+        speak("I am a voice assistant created by NHB LK Company.");
     }
     else if (message.includes("open youtube")) {
         speak("Opening YouTube...");
@@ -60,22 +102,6 @@ function takeCommand(message) {
     else if (message.includes("open google")) {
         speak("Opening Google...");
         window.open("https://google.com/", "_blank");
-    }
-    else if (message.includes("open facebook")) {
-        speak("Opening Facebook...");
-        window.open("https://facebook.com/", "_blank");
-    }
-    else if (message.includes("open instagram")) {
-        speak("Opening Instagram...");
-        window.open("https://instagram.com/", "_blank");
-    }
-    else if (message.includes("open calculator")) {
-        speak("Opening calculator...");
-        window.open("calculator://");
-    }
-    else if (message.includes("open whatsapp")) {
-        speak("Opening WhatsApp...");
-        window.open("whatsapp://");
     }
     else if (message.includes("time")) {
         let time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });

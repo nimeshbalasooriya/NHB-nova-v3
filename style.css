@@ -61,3 +61,17 @@ h1 {
     box-shadow: 2px 2px 20px rgb(255, 105, 180), 2px 2px 20px rgb(255, 20, 147); /* More prominent pink shadow on hover */
     letter-spacing: 2px;
 }
+
+#languageBtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#languageBtn:hover {
+    background-color: #45a049;
+    }

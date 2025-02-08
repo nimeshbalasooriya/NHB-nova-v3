@@ -45,6 +45,7 @@ h1 {
     display: none;
 }
 
+/* Start Listening Button Styling */
 #btn {
     width: 250px;
     height: 70px;
@@ -63,6 +64,7 @@ h1 {
     cursor: pointer;
     position: absolute;
     top: 20px; /* Positioned at the top above the logo */
+    z-index: 100;
 }
 
 #btn:hover {
@@ -78,6 +80,7 @@ h1 {
     outline: none;
 }
 
+/* Text styling */
 h1, #name, #va {
     text-align: center;
     font-family: "Protest Guerrilla", sans-serif;
@@ -90,5 +93,5 @@ h1, #name, #va {
 
 #va {
     color: rgb(43, 206, 212);
-    font-size: 45px; 
+    font-size: 45px;
 }

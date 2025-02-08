@@ -38,6 +38,21 @@ const technologyCompanies = [
     { company: "Tesla", headquarters: "Palo Alto, California, USA", industry: "Automotive, Energy", founded: "2003" }
 ];
 
+// Dataset for Presidents
+const presidents = [
+    { country: "Sri Lanka", president: "Anura Kumara Dissanayaka" },
+    { country: "United States", president: "Joe Biden" },
+    { country: "Russia", president: "Vladimir Putin" },
+    { country: "China", president: "Xi Jinping" },
+    { country: "India", president: "Droupadi Murmu" },
+    { country: "France", president: "Emmanuel Macron" },
+    { country: "Brazil", president: "Luiz Inácio Lula da Silva" },
+    { country: "Mexico", president: "Andrés Manuel López Obrador" },
+    { country: "South Korea", president: "Yoon Suk-yeol" },
+    { country: "Germany", president: "Frank-Walter Steinmeier" },
+    { country: "Turkey", president: "Recep Tayyip Erdoğan" }
+];
+
 // Function to speak text
 function speak(text) {
     let text_speak = new SpeechSynthesisUtterance(text);
@@ -116,6 +131,15 @@ function takeCommand(message) {
             speak(`${company.company} - Headquarters: ${company.headquarters}, Industry: ${company.industry}, Founded: ${company.founded}`);
         } else {
             speak("Sorry, I don't have information on that company.");
+        }
+    }
+    // Presidents details
+    else if (message.includes("president of")) {
+        const president = presidents.find(item => message.includes(item.country.toLowerCase()));
+        if (president) {
+            speak(`The President of ${president.country} is ${president.president}`);
+        } else {
+            speak("Sorry, I don't have information on that president.");
         }
     }
     // Existing commands

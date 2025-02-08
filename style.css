@@ -1,104 +1,67 @@
-@import url('https://fonts.googleapis.com/css2?family=Protest+Guerrilla&display=swap');
+let btn = document.querySelector("#btn");
+let content = document.querySelector("#content");
+let languageBtn = document.querySelector("#languageBtn");
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+// Default language set to English
+let currentLanguage = "en";
+
+// Speech synthesis function
+function speak(text) {
+    let text_speak = new SpeechSynthesisUtterance(text);
+    text_speak.rate = 1;
+    text_speak.pitch = 1;
+    text_speak.volume = 1;
+    text_speak.lang = currentLanguage === "si" ? "si-LK" : "en-US";
+    window.speechSynthesis.speak(text_speak);
 }
 
-body {
-    width: 100%;
-    height: 100vh;
-    background-color: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 30px;
-}
-
-#logo {
-    width: 20vw;
-}
-
-h1 {
-    color: aliceblue;
-    font-family: "Protest Guerrilla", sans-serif;
-}
-
-#name {
-    color: rgb(212, 43, 122);
-    font-size: 45px;
-}
-
-#va {
-    color: rgb(43, 206, 212);
-    font-size: 45px;
-}
-
-/* Voice Animation */
-#voice {
-    width: 200px;
-    display: none;
-}
-
-/* Mic Button */
-#btn {
-    width: 200px;
-    background: linear-gradient(to right, rgb(21, 145, 207), rgb(201, 41, 116));
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-size: 18px;
-    border-radius: 20px;
-    color: white;
-    box-shadow: 2px 2px 10px rgb(21, 145, 207), 2px 2px 10px rgb(201, 41, 116);
-    border: none;
-    transition: all 0.5s;
-    cursor: pointer;
-}
-
-/* Hover Effect */
-#btn:hover {
-    box-shadow: 2px 2px 20px rgb(21, 145, 207), 2px 2px 20px rgb(201, 41, 116);
-    letter-spacing: 2px;
-}
-
-/* Mic Active Animation */
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 0 10px rgba(21, 145, 207, 0.5), 0 0 10px rgba(201, 41, 116, 0.5);
-    }
-    50% {
-        transform: scale(1.1);
-        box-shadow: 0 0 20px rgba(21, 145, 207, 0.8), 0 0 20px rgba(201, 41, 116, 0.8);
-    }
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 10px rgba(21, 145, 207, 0.5), 0 0 10px rgba(201, 41, 116, 0.5);
+// Switch language function
+function switchLanguage(language) {
+    if (language === "si") {
+        currentLanguage = "si";
+        speak("සිංහල භාෂාවට මාරු වුණා.");
+        languageBtn.innerText = "Switch to English";
+    } else {
+        currentLanguage = "en";
+        speak("Switched to English.");
+        languageBtn.innerText = "Switch to Sinhala";
     }
 }
 
-/* Active Listening Mode */
-.listening {
-    animation: pulse 1s infinite;
-}
+// Speech recognition setup
+let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = new speechRecognition();
+recognition.onresult = (event) => {
+    let transcript = event.results[event.resultIndex][0].transcript.toLowerCase();
+    content.innerText = transcript;
+    takeCommand(transcript);
+};
 
-/* Language Button */
-#languageBtn {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: pink;
-    color: black;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-}
+// Button click event to start recognition
+btn.addEventListener("click", () => {
+    recognition.start();
+    btn.style.display = "none";
+    document.getElementById("voice").style.display = "block"; // Show voice animation
+});
 
-#languageBtn:hover {
-    background-color: rgb(255, 105, 180);
+// Function to handle commands
+function takeCommand(message) {
+    btn.style.display = "flex";
+    document.getElementById("voice").style.display = "none"; // Hide voice animation
+
+    if (message.includes("සිංහලට මාරු වෙන්න")) {
+        switchLanguage("si");
+    } else if (message.includes("ඉංග්‍රීසිට මාරු වෙන්න")) {
+        switchLanguage("en");
+    } else if (message.includes("hello") || message.includes("hey")) {
+        speak(currentLanguage === "si" ? "ඔයාට හෙලෝ, මට උදව් කරනවද?" : "Hello Sir, what can I help you?");
+    } else if (message.includes("open youtube") || message.includes("යූ ටියුබ් ඇරිය")) {
+        speak(currentLanguage === "si" ? "YouTube විවෘත කරනවා..." : "Opening YouTube...");
+        window.open("https://youtube.com/", "_blank");
+    } else if (message.includes("time") || message.includes("වෙලාව")) {
+        let time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
+        speak(currentLanguage === "si" ? `දැන් වෙලාව ${time} ය.` : `The time is ${time}`);
+    } else {
+        speak(currentLanguage === "si" ? "මට මෙය ගැන දැනුමක් නැහැ." : "I don't know about this.");
+    }
     }

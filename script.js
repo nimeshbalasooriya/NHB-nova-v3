@@ -108,4 +108,8 @@ function getProgrammingLanguageInfo(language) {
         "swift": "Swift is Apple's programming language designed for developing iOS, macOS, watchOS, and tvOS applications.",
         "kotlin": "Kotlin is a modern programming language that runs on the Java Virtual Machine and is widely used for Android app development.",
         "dart": "Dart is a programming language developed by Google, mainly used for building cross-platform mobile applications using Flutter.",
-        "typescript": "TypeScript is a superset of JavaScript that adds static typing, making it easier to develop and maintain large-scale
+        "typescript": "TypeScript is a superset of JavaScript that adds static typing, making it easier to develop and maintain large-scale applications."
+    };
+
+    return languages[language] || "Sorry, I don't have information about this language.";
+}

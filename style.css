@@ -65,13 +65,13 @@ h1 {
 #languageBtn {
     background-color: #FFC0CB;
     color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 20px 30px;
+    border-radius: 10px;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 #languageBtn:hover {
-    background-color: #45a049;
+    background-color: #FFC0CB;
     }

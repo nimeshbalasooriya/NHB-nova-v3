@@ -1,21 +1,23 @@
 let btn = document.querySelector("#btn");
 let content = document.querySelector("#content");
-let voiceGif = document.querySelector("#voice");
 let languageBtn = document.querySelector("#languageBtn");
 
-// Default language
+// Default language set to English
 let currentLanguage = "en";
 
 // Speech synthesis function
 function speak(text) {
     let text_speak = new SpeechSynthesisUtterance(text);
+    text_speak.rate = 1;
+    text_speak.pitch = 1;
+    text_speak.volume = 1;
     text_speak.lang = currentLanguage === "si" ? "si-LK" : "en-US";
     window.speechSynthesis.speak(text_speak);
 }
 
-// Function to switch languages
-function switchLanguage() {
-    if (currentLanguage === "en") {
+// Switch language function
+function switchLanguage(language) {
+    if (language === "si") {
         currentLanguage = "si";
         speak("සිංහල භාෂාවට මාරු වුණා.");
         languageBtn.innerText = "Switch to English";
@@ -26,44 +28,40 @@ function switchLanguage() {
     }
 }
 
-// Add event listener to language button
-languageBtn.addEventListener("click", switchLanguage);
-
 // Speech recognition setup
 let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = new speechRecognition();
-
-recognition.onstart = () => {
-    btn.classList.add("listening"); // Start animation
-    voiceGif.style.display = "block"; // Show voice gif
-};
-
-recognition.onend = () => {
-    btn.classList.remove("listening"); // Stop animation
-    voiceGif.style.display = "none"; // Hide voice gif
-};
-
 recognition.onresult = (event) => {
-    let transcript = event.results[0][0].transcript.toLowerCase();
+    let transcript = event.results[event.resultIndex][0].transcript.toLowerCase();
     content.innerText = transcript;
-    processCommand(transcript);
+    takeCommand(transcript);
 };
 
+// Button click event to start recognition
 btn.addEventListener("click", () => {
     recognition.start();
+    btn.style.display = "none";
+    document.getElementById("voice").style.display = "block"; // Show voice animation
 });
 
 // Function to handle commands
-function processCommand(message) {
-    if (message.includes("hello") || message.includes("hey")) {
-        speak(currentLanguage === "si" ? "ඔයාට හෙලෝ, මට උදව් කරනවද?" : "Hello, how can I help?");
+function takeCommand(message) {
+    btn.style.display = "flex";
+    document.getElementById("voice").style.display = "none"; // Hide voice animation
+
+    if (message.includes("සිංහලට මාරු වෙන්න")) {
+        switchLanguage("si");
+    } else if (message.includes("ඉංග්‍රීසිට මාරු වෙන්න")) {
+        switchLanguage("en");
+    } else if (message.includes("hello") || message.includes("hey")) {
+        speak(currentLanguage === "si" ? "ඔයාට හෙලෝ, මට උදව් කරනවද?" : "Hello Sir, what can I help you?");
     } else if (message.includes("open youtube") || message.includes("යූ ටියුබ් ඇරිය")) {
         speak(currentLanguage === "si" ? "YouTube විවෘත කරනවා..." : "Opening YouTube...");
         window.open("https://youtube.com/", "_blank");
     } else if (message.includes("time") || message.includes("වෙලාව")) {
-        let time = new Date().toLocaleTimeString();
+        let time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
         speak(currentLanguage === "si" ? `දැන් වෙලාව ${time} ය.` : `The time is ${time}`);
     } else {
-        speak(currentLanguage === "si" ? "මට මෙය හඳුනාගත නොහැක." : "I couldn't recognize that.");
+        speak(currentLanguage === "si" ? "මට මෙය ගැන දැනුමක් නැහැ." : "I don't know about this.");
     }
-}
+        }

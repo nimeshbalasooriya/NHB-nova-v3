@@ -15,7 +15,7 @@ body{
     flex-direction: column;
 }
 #logo{
-    width: 20vw;
+    width: 50vw;
 }
 h1{
     color: aliceblue;
@@ -23,14 +23,14 @@ h1{
 }
 #name{
     color:rgb(212, 43, 122);
-    font-size: 45px;
+    font-size: 60px;
 }
 #va{
     color:rgb(43, 206, 212);
     font-size: 45px; 
 }
 #voice{
-    width: 100px;
+    width: 300px;
     display: none;
    
 }

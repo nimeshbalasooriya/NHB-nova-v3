@@ -8,13 +8,13 @@
 
 body {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     background-color: black;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 30px;
     flex-direction: column;
+    gap: 30px;
 }
 
 #logo {
@@ -36,54 +36,69 @@ h1 {
     font-size: 45px;
 }
 
+/* Voice Animation */
 #voice {
     width: 200px;
     display: none;
 }
 
+/* Mic Button */
 #btn {
-    width: 100%;
-    background: linear-gradient(to right, rgb(21, 145, 207), rgb(201, 41, 116)); /* Blue to Pink Gradient */
-    padding: 8px 12px; /* Reduced padding for smaller button size */
+    width: 200px;
+    background: linear-gradient(to right, rgb(21, 145, 207), rgb(201, 41, 116));
+    padding: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    font-size: 18px; /* Reduced font size for the button text */
+    font-size: 18px;
     border-radius: 20px;
     color: white;
     box-shadow: 2px 2px 10px rgb(21, 145, 207), 2px 2px 10px rgb(201, 41, 116);
     border: none;
     transition: all 0.5s;
+    cursor: pointer;
 }
 
+/* Hover Effect */
 #btn:hover {
     box-shadow: 2px 2px 20px rgb(21, 145, 207), 2px 2px 20px rgb(201, 41, 116);
     letter-spacing: 2px;
 }
 
-/* Pink Button Theme */
+/* Mic Active Animation */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(21, 145, 207, 0.5), 0 0 10px rgba(201, 41, 116, 0.5);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(21, 145, 207, 0.8), 0 0 20px rgba(201, 41, 116, 0.8);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(21, 145, 207, 0.5), 0 0 10px rgba(201, 41, 116, 0.5);
+    }
+}
+
+/* Active Listening Mode */
+.listening {
+    animation: pulse 1s infinite;
+}
+
+/* Language Button */
 #languageBtn {
-    background: linear-gradient(to right, rgb(255, 20, 147), rgb(255, 105, 180)); /* Pink Gradient */
     padding: 10px 20px;
-    font-size: 18px;
-    border-radius: 25px;
-    color: white;
+    font-size: 16px;
+    background-color: pink;
+    color: black;
     border: none;
-    box-shadow: 2px 2px 10px rgba(255, 20, 147, 0.5), 2px 2px 10px rgba(255, 105, 180, 0.5);
-    transition: all 0.5s;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 #languageBtn:hover {
-    box-shadow: 2px 2px 15px rgba(255, 20, 147, 0.8), 2px 2px 15px rgba(255, 105, 180, 0.8);
-    letter-spacing: 2px;
-}
-
-/* Styling for content display area */
-#content {
-    color: white;
-    font-family: "Protest Guerrilla", sans-serif;
-    font-size: 20px;
-    margin-top: 20px;
-    text-align: center;
-}
+    background-color: rgb(255, 105, 180);
+    }

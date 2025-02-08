@@ -43,7 +43,7 @@ h1 {
 
 #btn {
     width: 100%;
-    background: linear-gradient(to right, rgb(21, 145, 207), rgb(201, 41, 116));
+    background: linear-gradient(to right, rgb(255, 105, 180), rgb(255, 20, 147)); /* Pink gradient */
     padding: 10px;
     display: flex;
     align-items: center;
@@ -52,46 +52,12 @@ h1 {
     font-size: 20px;
     border-radius: 20px;
     color: white;
-    box-shadow: 2px 2px 10px rgb(21, 145, 207), 2px 2px 10px rgb(201, 41, 116);
+    box-shadow: 2px 2px 10px rgb(255, 105, 180), 2px 2px 10px rgb(255, 20, 147); /* Soft pink shadow */
     border: none;
     transition: all 0.5s;
 }
 
 #btn:hover {
-    box-shadow: 2px 2px 20px rgb(21, 145, 207), 2px 2px 20px rgb(201, 41, 116);
+    box-shadow: 2px 2px 20px rgb(255, 105, 180), 2px 2px 20px rgb(255, 20, 147); /* More prominent pink shadow on hover */
     letter-spacing: 2px;
 }
-
-#btn.clicked {
-    background-color: rgb(233, 62, 162); /* Pink color for active state */
-    animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-#languageBtn {
-    background-color: rgb(43, 206, 212);
-    color: white;
-    padding: 10px 20px;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 2px 2px 10px rgb(43, 206, 212);
-    transition: 0.3s;
-}
-
-#languageBtn:hover {
-    background-color: rgb(15, 162, 184);
-    box-shadow: 2px 2px 15px rgb(43, 206, 212);
-    }

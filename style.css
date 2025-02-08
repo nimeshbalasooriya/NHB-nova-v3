@@ -1,67 +1,107 @@
-let btn = document.querySelector("#btn");
-let content = document.querySelector("#content");
-let languageBtn = document.querySelector("#languageBtn");
+@import url('https://fonts.googleapis.com/css2?family=Protest+Guerrilla&display=swap');
 
-// Default language set to English
-let currentLanguage = "en";
-
-// Speech synthesis function
-function speak(text) {
-    let text_speak = new SpeechSynthesisUtterance(text);
-    text_speak.rate = 1;
-    text_speak.pitch = 1;
-    text_speak.volume = 1;
-    text_speak.lang = currentLanguage === "si" ? "si-LK" : "en-US";
-    window.speechSynthesis.speak(text_speak);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-// Switch language function
-function switchLanguage(language) {
-    if (language === "si") {
-        currentLanguage = "si";
-        speak("සිංහල භාෂාවට මාරු වුණා.");
-        languageBtn.innerText = "Switch to English";
-    } else {
-        currentLanguage = "en";
-        speak("Switched to English.");
-        languageBtn.innerText = "Switch to Sinhala";
-    }
+body {
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    flex-direction: column;
 }
 
-// Speech recognition setup
-let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-let recognition = new speechRecognition();
-recognition.onresult = (event) => {
-    let transcript = event.results[event.resultIndex][0].transcript.toLowerCase();
-    content.innerText = transcript;
-    takeCommand(transcript);
-};
+#logo {
+    width: 20vw;
+}
 
-// Button click event to start recognition
-btn.addEventListener("click", () => {
-    recognition.start();
-    btn.style.display = "none";
-    document.getElementById("voice").style.display = "block"; // Show voice animation
-});
+h1 {
+    color: aliceblue;
+    font-family: "Protest Guerrilla", sans-serif;
+}
 
-// Function to handle commands
-function takeCommand(message) {
-    btn.style.display = "flex";
-    document.getElementById("voice").style.display = "none"; // Hide voice animation
+#name {
+    color: rgb(212, 43, 122);
+    font-size: 45px;
+}
 
-    if (message.includes("සිංහලට මාරු වෙන්න")) {
-        switchLanguage("si");
-    } else if (message.includes("ඉංග්‍රීසිට මාරු වෙන්න")) {
-        switchLanguage("en");
-    } else if (message.includes("hello") || message.includes("hey")) {
-        speak(currentLanguage === "si" ? "ඔයාට හෙලෝ, මට උදව් කරනවද?" : "Hello Sir, what can I help you?");
-    } else if (message.includes("open youtube") || message.includes("යූ ටියුබ් ඇරිය")) {
-        speak(currentLanguage === "si" ? "YouTube විවෘත කරනවා..." : "Opening YouTube...");
-        window.open("https://youtube.com/", "_blank");
-    } else if (message.includes("time") || message.includes("වෙලාව")) {
-        let time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
-        speak(currentLanguage === "si" ? `දැන් වෙලාව ${time} ය.` : `The time is ${time}`);
-    } else {
-        speak(currentLanguage === "si" ? "මට මෙය ගැන දැනුමක් නැහැ." : "I don't know about this.");
-    }
+#va {
+    color: rgb(43, 206, 212);
+    font-size: 45px;
+}
+
+#voice {
+    width: 200px;
+    display: none;
+}
+
+/* Glow Hover Effect for Microphone Button */
+.glow-on-hover {
+    width: 220px;
+    height: 50px;
+    border: none;
+    outline: none;
+    color: #fff;
+    background: #111;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 16px;
+    padding: 10px;
+}
+
+.glow-on-hover:before {
+    content: '';
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00f0, #ff0000);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    border-radius: 10px;
+}
+
+.glow-on-hover:active {
+    color: #000;
+}
+
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+
+/* 3D Effect for Language Button */
+.btn-3d {
+    background-color: #ff4742;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 6px #d93a37;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 16px;
+    margin: 10px;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.btn-3d:active {
+    box-shadow: 0 2px #d93a37;
+    transform: translateY(4px);
     }

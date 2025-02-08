@@ -63,7 +63,7 @@ h1 {
     letter-spacing: 2px;
 }
 
-#languageBtn {
+#languageBtn, #themeBtn {
     background-color: #4CAF50;
     color: white;
     padding: 10px 20px;
@@ -73,7 +73,7 @@ h1 {
     transition: background-color 0.3s;
 }
 
-#languageBtn:hover {
+#languageBtn:hover, #themeBtn:hover {
     background-color: #45a049;
 }
 

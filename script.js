@@ -1,6 +1,15 @@
-let btn = document.querySelector("#btn");
-let content = document.querySelector("#content");
-let voice = document.querySelector("#voice");
+let btn = document.createElement("button");
+btn.textContent = "Start Listening";
+document.body.appendChild(btn);
+
+let content = document.createElement("div");
+content.textContent = "Say something...";
+document.body.appendChild(content);
+
+let voice = document.createElement("div");
+voice.style.display = "none";
+voice.textContent = "Listening...";
+document.body.appendChild(voice);
 
 // Dataset for programming languages
 const programmingLanguages = [
@@ -18,6 +27,15 @@ const countries = [
     { country: "Japan", capital: "Tokyo", population: "126.3 million", language: "Japanese", currency: "Yen" },
     { country: "India", capital: "New Delhi", population: "1.38 billion", language: "Hindi, English", currency: "Indian Rupee" },
     { country: "Germany", capital: "Berlin", population: "83 million", language: "German", currency: "Euro" }
+];
+
+// Dataset for technology companies
+const technologyCompanies = [
+    { company: "Apple", headquarters: "Cupertino, California, USA", industry: "Consumer Electronics, Software", founded: "1976" },
+    { company: "Microsoft", headquarters: "Redmond, Washington, USA", industry: "Software, Cloud Computing", founded: "1975" },
+    { company: "Google", headquarters: "Mountain View, California, USA", industry: "Internet Services, Advertising", founded: "1998" },
+    { company: "Amazon", headquarters: "Seattle, Washington, USA", industry: "E-commerce, Cloud Computing", founded: "1994" },
+    { company: "Tesla", headquarters: "Palo Alto, California, USA", industry: "Automotive, Energy", founded: "2003" }
 ];
 
 // Function to speak text
@@ -89,6 +107,15 @@ function takeCommand(message) {
             speak(`${country.country} - Capital: ${country.capital}, Population: ${country.population}, Language: ${country.language}, Currency: ${country.currency}`);
         } else {
             speak("Sorry, I don't have information on that country.");
+        }
+    }
+    // Technology companies details
+    else if (message.includes("apple") || message.includes("microsoft") || message.includes("google") || message.includes("amazon") || message.includes("tesla")) {
+        const company = technologyCompanies.find(item => message.includes(item.company.toLowerCase()));
+        if (company) {
+            speak(`${company.company} - Headquarters: ${company.headquarters}, Industry: ${company.industry}, Founded: ${company.founded}`);
+        } else {
+            speak("Sorry, I don't have information on that company.");
         }
     }
     // Existing commands

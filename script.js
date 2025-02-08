@@ -107,43 +107,57 @@ function takeCommand(message) {
 // Programming language related responses
 function getProgrammingLanguageInfo(language) {
     const languages = {
-        "python": {
-            english: "Python is a popular programming language known for its simplicity and readability. It is widely used in web development, data science, and AI.",
-            sinhala: "Python යනු ජනප්‍රිය කේත පද්ධතියකි, එය පහසුකම සහ කියවීමට හැකි බවට පෙනේ. මෙය වෙබ් සංවර්ධනය, දත්ත විද්‍යාව සහ කෘතිම බුද්ධිය සඳහා පවා භාවිතා වේ."
-        },
-        "java": {
-            english: "Java is a high-level, object-oriented programming language used in enterprise applications, Android development, and backend services.",
-            sinhala: "Java යනු උසස් මට්ටමේ, වස්තු-සහ-සංයෝජිත කේත භාෂාවකි, එය ව්‍යවසායක යෙදුම්, Android සංවර්ධනය සහ පිටුපස සේවා සඳහා භාවිතා වේ."
-        },
-        "javascript": {
-            english: "JavaScript is a versatile programming language primarily used for web development, enabling dynamic and interactive websites.",
-            sinhala: "JavaScript යනු බහුලව භාවිතා කරන කේත භාෂාවකි, මූලිකව වෙබ් සංවර්ධනය සඳහා භාවිතා වේ, එය ගතික සහ අන්තර්ක්‍රියාකාරී වෙබ් අඩවි සැලසීමට ඉඩ දෙයි."
-        }
+        "python": "Python is a popular programming language known for its simplicity and readability. It is widely used in web development, data science, and AI.",
+        "java": "Java is a high-level, object-oriented programming language used in enterprise applications, Android development, and backend services.",
+        "javascript": "JavaScript is a versatile programming language primarily used for web development, enabling dynamic and interactive websites.",
+        "c++": "C++ is a powerful programming language commonly used in game development, system programming, and high-performance applications.",
+        "php": "PHP is a server-side scripting language widely used for web development and content management systems like WordPress.",
+        "go": "Go, also known as Golang, is a statically typed programming language developed by Google, known for its efficiency and concurrency support.",
+        "swift": "Swift is Apple's programming language designed for developing iOS, macOS, watchOS, and tvOS applications.",
+        "kotlin": "Kotlin is a modern programming language that runs on the Java Virtual Machine and is widely used for Android app development.",
+        "dart": "Dart is a programming language developed by Google, mainly used for building cross-platform mobile applications using Flutter.",
+        "typescript": "TypeScript is a superset of JavaScript that adds static typing, making it easier to develop and maintain large-scale applications.",
+        "ruby": "Ruby is a dynamic, interpreted language mainly used for web development with the Ruby on Rails framework.",
+        "rust": "Rust is a systems programming language focused on safety, concurrency, and performance.",
+        "c#": "C# is a modern, object-oriented language developed by Microsoft, commonly used in game development with Unity and enterprise applications.",
+        "sql": "SQL, or Structured Query Language, is used for managing and querying relational databases.",
+        "r": "R is a language used primarily for statistical computing and data analysis.",
+        "perl": "Perl is a versatile scripting language used for web development, system administration, and text processing.",
+        "html": "HTML (Hypertext Markup Language) is the standard language for creating web pages and web applications.",
+        "css": "CSS (Cascading Style Sheets) is used for describing the presentation of a document written in HTML or XML.",
+        "shell": "Shell scripting is a computer program designed to be run by the Unix shell, a command-line interpreter.",
+        "matlab": "MATLAB is a programming platform designed for engineers and scientists to analyze and design systems and products.",
+        "scala": "Scala is a strong static type system programming language that fuses functional and object-oriented programming.",
+        "lua": "Lua is a lightweight, high-level scripting language designed for embedded use in applications.",
+        "vhdl": "VHDL (VHSIC Hardware Description Language) is a hardware description language used for digital system design.",
+        "assembly": "Assembly language is a low-level programming language that is closely related to machine code."
     };
 
-    return languages[language] || {english: "I am not familiar with that programming language.", sinhala: "මට එම කේත භාෂාව ගැන අවබෝධයක් නැත."};
+    return languages[language] || "I am not familiar with that programming language.";
 }
 
 // Country related responses
 function getCountryInfo(country) {
     const countries = {
-        "usa": {
-            english: "The United States of America is a country primarily located in North America. It is known for its cultural diversity, technological advancements, and influential global presence.",
-            sinhala: "එක්සත් ජනපදය යනු පරිප්‍රදේශය අධිකව පිහිටි පදනමක් වන දේශයකි. එය සංස්කෘතික විවිධත්වය, තාක්ෂණික ඉදිරිය සහ ආලෝකනීය ගෝලීය අස්ථානවලින් ප්‍රසිද්ධයි."
-        },
-        "canada": {
-            english: "Canada is a country in North America, famous for its natural beauty, multicultural society, and high quality of life.",
-            sinhala: "කැනඩාව යනු උතුරු ඇමරිකාවේ පිහිටි රටකි, එය ස්වාභාවික රූමය, බහු-ආධ්‍යාත්මික සමාජය සහ උසස් ජීවන ගුණය සඳහා ප්‍රසිද්ධයි."
-        }
+        "usa": "The United States of America is a country primarily located in North America. It is known for its cultural diversity, technological advancements, and influential global presence.",
+        "canada": "Canada is a country in North America, famous for its natural beauty, multicultural society, and high quality of life.",
+        "india": "India is a country in South Asia, known for its rich history, cultural diversity, and being the world's largest democracy.",
+        "sri lanka": "Sri Lanka is an island nation in South Asia, known for its beaches, ancient cities, and the Ceylon tea industry.",
+        "china": "China is the world's most populous country, with significant global economic influence, and a rich cultural history.",
+        "japan": "Japan is an island nation in East Asia, famous for its advanced technology, traditional culture, and global influence in various sectors.",
+        "germany": "Germany is a country in Central Europe, known for its strong economy, rich cultural heritage, and technological innovations.",
+        "france": "France is a country in Western Europe, known for its historical landmarks, cultural influence, and culinary excellence.",
+        "uk": "The United Kingdom is a country in Europe, comprising England, Scotland, Wales, and Northern Ireland, with a significant historical and political impact.",
+        "australia": "Australia is a country and continent, known for its natural wonders, diverse wildlife, and vibrant cities."
     };
 
-    return countries[country] || {english: "Country information not available.", sinhala: "රට විස්තර ලබාගත නොහැක."};
+    return countries[country] || "Country information not available.";
 }
 
 // AI related responses
 function getAIInfo() {
     return {
         english: "AI (Artificial Intelligence) refers to the simulation of human intelligence in machines that are programmed to think and learn. AI is used in a variety of fields such as machine learning, robotics, and natural language processing.",
-        sinhala: "AI (කෘතිම බුද්ධිය) යනු යන්ත්‍රවල මනුෂ්‍ය බුද්ධිය පරිවර්තනය කිරීමයි, ඒවා චින්තනය කිරීම හා ඉගෙනීම සඳහා වැඩසටහන් කළ යන්ත්‍රයක් වන අතර, AI මැෂින් ලර්නින්, රොබෝටික්ස් හා ස්වභාවික භාෂා සැකසුම වැනි විවිධ ක්ෂේත්‍රවල භාවිතා වේ."
+        sinhala: "AI (කෘතිම බුද්ධිය) යනු මනුෂ්‍ය බුද්ධිය කෘතිම පරිපාලනයෙන් සහ අධ්‍යයනයෙන් පරිවර්තනය කරන යන්ත්‍ර වශයෙන් අර්ථකථනය කෙරේ. කෘතිම බුද්ධිය මැෂින් ලර්නින්, රොබෝටික්ස් සහ ස්වභාවික භාෂා සැකසුම වැනි විවිධ ක්ෂේත්‍රවල භාවිතා වේ."
     };
 }

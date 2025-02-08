@@ -40,17 +40,27 @@ languageBtn.addEventListener("click", () => {
 // Speech recognition for voice command
 let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = new speechRecognition();
+
+// Ensure recognition happens only when speech is finished
+recognition.onstart = () => {
+    voiceGif.style.display = "block"; // Show the voice animation
+};
+
+recognition.onend = () => {
+    voiceGif.style.display = "none"; // Hide the animation once done
+};
+
+// Handle results after recognition
 recognition.onresult = (event) => {
     let transcript = event.results[event.resultIndex][0].transcript.toLowerCase();
-    content.innerText = transcript;
-    takeCommand(transcript);
+    content.innerText = transcript; // Show recognized speech in the content area
+    takeCommand(transcript); // Call takeCommand to process the voice input
 };
 
 // Start voice recognition when the button is clicked
 btn.addEventListener("click", () => {
     recognition.start();
     btn.style.display = "none"; // Hide the button while listening
-    voiceGif.style.display = "block"; // Show the voice animation
 });
 
 // Handle the voice commands

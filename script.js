@@ -51,7 +51,7 @@ function takeCommand(message) {
         speak("hello sir, what can I help you?");
     }
     else if (message.includes("who are you")) {
-        speak("I am a virtual assistant, created by Ayush Sir.");
+        speak("I am sri lnaka voice assistant creted by NHB lk company .");
     }
     else if (message.includes("open youtube")) {
         speak("Opening YouTube...");

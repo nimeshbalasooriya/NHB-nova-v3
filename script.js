@@ -1,6 +1,7 @@
 let btn = document.querySelector("#btn");
 let content = document.querySelector("#content");
 let languageBtn = document.querySelector("#languageBtn");
+let voiceGif = document.querySelector("#voiceGif");
 
 // Default language set to English
 let currentLanguage = "en";
@@ -31,6 +32,11 @@ function switchLanguage(language) {
     }
 }
 
+// Event listener for language switch
+languageBtn.addEventListener("click", () => {
+    switchLanguage(currentLanguage === "en" ? "si" : "en");
+});
+
 // Speech recognition for voice command
 let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = new speechRecognition();
@@ -40,24 +46,27 @@ recognition.onresult = (event) => {
     takeCommand(transcript);
 };
 
+// Start voice recognition when the button is clicked
 btn.addEventListener("click", () => {
     recognition.start();
     btn.style.display = "none"; // Hide the button while listening
+    voiceGif.style.display = "block"; // Show the voice animation
 });
 
 // Handle the voice commands
 function takeCommand(message) {
-    btn.style.display = "flex"; // Show the button again
+    btn.style.display = "flex"; // Show the button again after recognition
+    voiceGif.style.display = "none"; // Hide the animation after command processing
 
-    // Language switch commands
-    if (message.includes("සිංහලට මාරු වෙන්න")) {
+    // Language switch commands (via voice)
+    if (message.includes("switch to sinhala")) {
         switchLanguage("si");
-    } else if (message.includes("ඉංග්‍රීසිට මාරු වෙන්න")) {
+    } else if (message.includes("switch to english")) {
         switchLanguage("en");
     }
 
     // Handle common phrases and queries
-    else if (message.includes("hello") || message.includes("hey")) {
+    if (message.includes("hello") || message.includes("hey")) {
         speak(currentLanguage === "si" ? "ඔයාට හෙලෝ, මට උදව් කරනවද?" : "Hello Sir, what can I help you?");
     } else if (message.includes("what are you") || message.includes("ඔබ කවුද")) {
         speak(currentLanguage === "si" ? "මම NHB LK සමාගම විසින් නිර්මාණය කළ කෘතිම බුද්ධි සහායකයෙක්." : "I am a virtual assistant, created by NHB LK COMPANY.");
@@ -131,4 +140,8 @@ function getCountryInfo(country) {
         "japan": "Japan is an island nation in East Asia, known for its advanced technology, rich cultural heritage, and influence in global pop culture.",
         "germany": "Germany is a country in Central Europe, known for its engineering, automotive industry, and strong economy.",
         "france": "France is a country in Western Europe, famous for its art, culture, fashion, and history.",
-        "uk": "The United Kingdom is a sovereign country located
+        "uk": "The United Kingdom is a sovereign country located in Europe."
+    };
+
+    return countries[country] || "I don't have information on this country.";
+}

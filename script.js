@@ -31,11 +31,6 @@ function switchLanguage(language) {
     }
 }
 
-// Event listener for language switch
-languageBtn.addEventListener("click", () => {
-    switchLanguage(currentLanguage === "en" ? "si" : "en");
-});
-
 // Speech recognition for voice command
 let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = new speechRecognition();
@@ -54,15 +49,15 @@ btn.addEventListener("click", () => {
 function takeCommand(message) {
     btn.style.display = "flex"; // Show the button again
 
-    // Language switch commands (via voice)
-    if (message.includes("switch to sinhala")) {
+    // Language switch commands
+    if (message.includes("සිංහලට මාරු වෙන්න")) {
         switchLanguage("si");
-    } else if (message.includes("switch to english")) {
+    } else if (message.includes("ඉංග්‍රීසිට මාරු වෙන්න")) {
         switchLanguage("en");
     }
 
     // Handle common phrases and queries
-    if (message.includes("hello") || message.includes("hey")) {
+    else if (message.includes("hello") || message.includes("hey")) {
         speak(currentLanguage === "si" ? "ඔයාට හෙලෝ, මට උදව් කරනවද?" : "Hello Sir, what can I help you?");
     } else if (message.includes("what are you") || message.includes("ඔබ කවුද")) {
         speak(currentLanguage === "si" ? "මම NHB LK සමාගම විසින් නිර්මාණය කළ කෘතිම බුද්ධි සහායකයෙක්." : "I am a virtual assistant, created by NHB LK COMPANY.");
@@ -80,7 +75,7 @@ function takeCommand(message) {
         speak(currentLanguage === "si" ? `අද දිනය ${date} වේ.` : `Today's date is ${date}`);
     } else {
         // Programming language and country detection using regular expressions
-        let langMatch = message.match(/what is (python|java|javascript|c\+\+|php|go|swift|kotlin|dart|typescript|ruby|rust|c#|sql|r|perl|html|css|ruby|shell|matlab|scala|rust|lua|vhdl|assembly)/);
+        let langMatch = message.match(/what is (python|java|javascript|c\+\+|php|go|swift|kotlin|dart|typescript|ruby|rust|c#|sql|r|perl)/);
         if (langMatch) {
             let lang = langMatch[1];
             let info = getProgrammingLanguageInfo(lang);
@@ -119,15 +114,7 @@ function getProgrammingLanguageInfo(language) {
         "c#": "C# is a modern, object-oriented language developed by Microsoft, commonly used in game development with Unity and enterprise applications.",
         "sql": "SQL, or Structured Query Language, is used for managing and querying relational databases.",
         "r": "R is a language used primarily for statistical computing and data analysis.",
-        "perl": "Perl is a versatile scripting language used for web development, system administration, and text processing.",
-        "html": "HTML (Hypertext Markup Language) is the standard language for creating web pages and web applications.",
-        "css": "CSS (Cascading Style Sheets) is used for describing the presentation of a document written in HTML or XML.",
-        "shell": "Shell scripting is a computer program designed to be run by the Unix shell, a command-line interpreter.",
-        "matlab": "MATLAB is a programming platform designed for engineers and scientists to analyze and design systems and products.",
-        "scala": "Scala is a strong static type system programming language that fuses functional and object-oriented programming.",
-        "lua": "Lua is a lightweight, high-level scripting language designed for embedded use in applications.",
-        "vhdl": "VHDL (VHSIC Hardware Description Language) is a hardware description language used for digital system design.",
-        "assembly": "Assembly language is a low-level programming language that is closely related to machine code."
+        "perl": "Perl is a versatile scripting language used for web development, system administration, and text processing."
     };
 
     return languages[language] || (currentLanguage === "si" ? "මට මේ භාෂාව ගැන වැඩිදුර දැනුමක් නැහැ." : "I am not familiar with that programming language.");
@@ -140,4 +127,8 @@ function getCountryInfo(country) {
         "canada": "Canada is a country in North America, famous for its natural beauty, multicultural society, and high quality of life.",
         "india": "India is a country in South Asia, known for its rich history, cultural diversity, and being the world's largest democracy.",
         "sri lanka": "Sri Lanka is an island nation in South Asia, known for its beaches, ancient cities, and the Ceylon tea industry.",
-        "china": "China is the world's most populous country,
+        "china": "China is the world's most populous country, located in East Asia, known for its long history, technological advancements, and economic influence.",
+        "japan": "Japan is an island nation in East Asia, known for its advanced technology, rich cultural heritage, and influence in global pop culture.",
+        "germany": "Germany is a country in Central Europe, known for its engineering, automotive industry, and strong economy.",
+        "france": "France is a country in Western Europe, famous for its art, culture, fashion, and history.",
+        "uk": "The United Kingdom is a sovereign country located

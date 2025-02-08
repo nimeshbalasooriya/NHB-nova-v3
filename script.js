@@ -1,80 +1,88 @@
-// Variables for elements
-const voiceBtn = document.getElementById('voiceBtn');
-const languageBtn = document.getElementById('languageBtn');
-const themeBtn = document.getElementById('themeBtn');
-const content = document.getElementById('content');
+let btn=document.querySelector("#btn")
+let content=document.querySelector("#content")
+let voice=document.querySelector("#voice")
 
-let currentLanguage = 'en';
-let isDarkMode = false;
-
-// Function to speak text
-function speak(text) {
-    const speech = new SpeechSynthesisUtterance(text);
-    speech.lang = currentLanguage === 'si' ? 'si-LK' : 'en-US';
-    window.speechSynthesis.speak(speech);
+function speak(text){
+    let text_speak=new SpeechSynthesisUtterance(text)
+    text_speak.rate=1
+    text_speak.pitch=1
+    text_speak.volume=1
+    text_speak.lang="eg-uk"
+    window.speechSynthesis.speak(text_speak)
 }
 
-// Function to switch between languages
-function switchLanguage() {
-    if (currentLanguage === 'en') {
-        currentLanguage = 'si';
-        languageBtn.textContent = "Switch to English";
-        speak("සිංහල භාෂාවට මාරු වුණා.");
-    } else {
-        currentLanguage = 'en';
-        languageBtn.textContent = "Switch to Sinhala";
-        speak("Switched to English.");
+function wishMe(){
+    let day=new Date()
+    let hours=day.getHours()
+    if(hours>=0 && hours<12){
+        speak("Good Morning Sir")
+    }
+    else if(hours>=12 && hours <16){
+        speak("Good afternoon Sir")
+    }else{
+        speak("Good Evening Sir")
     }
 }
-
-// Function to toggle dark mode
-function toggleTheme() {
-    isDarkMode = !isDarkMode;
-    document.body.classList.toggle('dark-mode', isDarkMode);
-    document.querySelectorAll('button').forEach(btn => btn.classList.toggle('dark-mode', isDarkMode));
-    themeBtn.textContent = isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode";
+// window.addEventListener('load',()=>{
+//     wishMe()
+// })
+let speechRecognition= window.SpeechRecognition || window.webkitSpeechRecognition 
+let recognition =new speechRecognition()
+recognition.onresult=(event)=>{
+    let currentIndex=event.resultIndex
+    let transcript=event.results[currentIndex][0].transcript
+    content.innerText=transcript
+   takeCommand(transcript.toLowerCase())
 }
 
-// Function to start voice recognition
-function startVoiceRecognition() {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
-    recognition.lang = currentLanguage === 'si' ? 'si-LK' : 'en-US';
-
-    recognition.start();
-    
-    recognition.onstart = () => {
-        content.innerText = "Listening...";
-    };
-
-    recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript.toLowerCase();
-        content.innerText = `You said: ${transcript}`;
-        processCommand(transcript);
-    };
-
-    recognition.onend = () => {
-        content.innerText = "Press the button and speak.";
-    };
-}
-
-// Function to process voice commands
-function processCommand(command) {
-    if (command.includes('hello')) {
-        speak(currentLanguage === 'si' ? 'ඔයාට හෙලෝ!' : 'Hello!');
-    } else if (command.includes('time')) {
-        const time = new Date().toLocaleTimeString();
-        speak(currentLanguage === 'si' ? `දැන් වෙලාව ${time} වේ.` : `The time is ${time}`);
-    } else if (command.includes('open youtube')) {
-        speak(currentLanguage === 'si' ? 'YouTube විවෘත කරනවා.' : 'Opening YouTube...');
-        window.open('https://www.youtube.com');
-    } else {
-        speak(currentLanguage === 'si' ? 'මට මෙය සොයාගන්නා සේවාවක් තිබේ.' : 'I am searching this online for you.');
-        window.open(`https://www.google.com/search?q=${command}`);
+btn.addEventListener("click",()=>{
+    recognition.start()
+    voice.style.display="block"
+    btn.style.display="none"
+})
+function takeCommand(message){
+   voice.style.display="none"
+    btn.style.display="flex"
+    if(message.includes("hello")||message.includes("hey")){
+        speak("hello sir,what can i help you?")
+    }
+    else if(message.includes("who are you")){
+        speak("i am virtual assistant ,created by Ayush Sir")
+    }else if(message.includes("open youtube")){
+        speak("opening youtube...")
+        window.open("https://youtube.com/","_blank")
+    }
+    else if(message.includes("open google")){
+        speak("opening google...")
+        window.open("https://google.com/","_blank")
+    }
+    else if(message.includes("open facebook")){
+        speak("opening facebook...")
+        window.open("https://facebook.com/","_blank")
+    }
+    else if(message.includes("open instagram")){
+        speak("opening instagram...")
+        window.open("https://instagram.com/","_blank")
+    }
+    else if(message.includes("open calculator")){
+        speak("opening calculator..")
+        window.open("calculator://")
+    }
+    else if(message.includes("open whatsapp")){
+        speak("opening whatsapp..")
+        window.open("whatsapp://")
+    }
+    else if(message.includes("time")){
+      let time=new Date().toLocaleString(undefined,{hour:"numeric",minute:"numeric"})
+      speak(time)
+    }
+    else if(message.includes("date")){
+        let date=new Date().toLocaleString(undefined,{day:"numeric",month:"short"})
+        speak(date)
+      }
+    else{
+        let finalText="this is what i found on internet regarding" + message.replace("shipra","") || message.replace("shifra","")
+        speak(finalText)
+        window.open(`https://www.google.com/search?q=${message.replace("shipra","")}`,"_blank")
     }
 }
-
-// Event listeners for buttons
-voiceBtn.addEventListener('click', startVoiceRecognition);
-languageBtn.addEventListener('click', switchLanguage);
-themeBtn.addEventListener('click', toggleTheme);

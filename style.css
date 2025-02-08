@@ -42,43 +42,32 @@ h1 {
 }
 
 #btn {
-    width: 100px;
-    height: 100px;
-    background: radial-gradient(circle, rgb(21, 145, 207), rgb(201, 41, 116));
-    padding: 20px;
+    width: 100%;
+    background: linear-gradient(to right, rgb(21, 145, 207), rgb(201, 41, 116));
+    padding: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
+    gap: 10px;
     font-size: 20px;
+    border-radius: 20px;
     color: white;
-    border: none;
     box-shadow: 2px 2px 10px rgb(21, 145, 207), 2px 2px 10px rgb(201, 41, 116);
-    cursor: pointer;
-    position: relative;
-    transition: all 0.3s ease-in-out;
-}
-
-#btn img {
-    width: 40px;
-    height: 40px;
-    transition: transform 0.3s ease;
-}
-
-#btn.active img {
-    transform: scale(1.2);
+    border: none;
+    transition: all 0.5s;
 }
 
 #btn:hover {
-    box-shadow: 0px 0px 20px rgb(21, 145, 207), 0px 0px 20px rgb(201, 41, 116);
-    transform: scale(1.1);
+    box-shadow: 2px 2px 20px rgb(21, 145, 207), 2px 2px 20px rgb(201, 41, 116);
+    letter-spacing: 2px;
 }
 
 #btn.clicked {
-    animation: pulseAnimation 1.5s infinite;
+    background-color: rgb(233, 62, 162); /* Pink color for active state */
+    animation: pulse 1s infinite;
 }
 
-@keyframes pulseAnimation {
+@keyframes pulse {
     0% {
         transform: scale(1);
     }
@@ -91,17 +80,18 @@ h1 {
 }
 
 #languageBtn {
-    width: auto;
-    padding: 10px 20px;
-    background: rgb(43, 206, 212);
+    background-color: rgb(43, 206, 212);
     color: white;
-    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    box-shadow: 2px 2px 10px rgb(43, 206, 212);
+    transition: 0.3s;
 }
 
 #languageBtn:hover {
-    background: rgb(21, 145, 207);
-    transform: scale(1.1);
+    background-color: rgb(15, 162, 184);
+    box-shadow: 2px 2px 15px rgb(43, 206, 212);
     }

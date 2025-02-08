@@ -1,4 +1,6 @@
-
+let btn = document.createElement("button");
+btn.textContent = "Start Listening";
+document.body.appendChild(btn);
 
 let content = document.createElement("div");
 content.textContent = "Say something...";
@@ -90,7 +92,6 @@ if (speechRecognition) {
         recognition.start();
         voice.style.display = "block";
         btn.style.display = "none";
-        btn.remove(); // This will remove the button after clicking
     });
 } else {
     alert("Speech Recognition API is not supported by your browser.");

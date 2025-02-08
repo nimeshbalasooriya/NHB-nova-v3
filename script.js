@@ -91,9 +91,6 @@ function takeCommand(message) {
                 let country = countryMatch[1];
                 let countryInfo = getCountryInfo(country);
                 speak(currentLanguage === "si" ? `${country} ගැන ඉතා වැදගත් විස්තර මෙයයි: ${countryInfo}` : countryInfo);
-            } else if (message.includes("ai") || message.includes("කෘතිම බුද්ධිය")) {
-                let aiInfo = getAIInfo();
-                speak(currentLanguage === "si" ? aiInfo.sinhala : aiInfo.english);
             } else {
                 // Google search for unrecognized queries
                 let finalText = currentLanguage === "si" ? `මට මෙය ගැන අන්තර්ජාලයෙන් සොයාගන්න හැකි වුණා.` : "This is what I found on the internet regarding " + message;
@@ -133,7 +130,7 @@ function getProgrammingLanguageInfo(language) {
         "assembly": "Assembly language is a low-level programming language that is closely related to machine code."
     };
 
-    return languages[language] || "I am not familiar with that programming language.";
+    return languages[language] || (currentLanguage === "si" ? "මට මේ භාෂාව ගැන වැඩිදුර දැනුමක් නැහැ." : "I am not familiar with that programming language.");
 }
 
 // Country related responses
@@ -143,21 +140,4 @@ function getCountryInfo(country) {
         "canada": "Canada is a country in North America, famous for its natural beauty, multicultural society, and high quality of life.",
         "india": "India is a country in South Asia, known for its rich history, cultural diversity, and being the world's largest democracy.",
         "sri lanka": "Sri Lanka is an island nation in South Asia, known for its beaches, ancient cities, and the Ceylon tea industry.",
-        "china": "China is the world's most populous country, with significant global economic influence, and a rich cultural history.",
-        "japan": "Japan is an island nation in East Asia, famous for its advanced technology, traditional culture, and global influence in various sectors.",
-        "germany": "Germany is a country in Central Europe, known for its strong economy, rich cultural heritage, and technological innovations.",
-        "france": "France is a country in Western Europe, known for its historical landmarks, cultural influence, and culinary excellence.",
-        "uk": "The United Kingdom is a country in Europe, comprising England, Scotland, Wales, and Northern Ireland, with a significant historical and political impact.",
-        "australia": "Australia is a country and continent, known for its natural wonders, diverse wildlife, and vibrant cities."
-    };
-
-    return countries[country] || "Country information not available.";
-}
-
-// AI related responses
-function getAIInfo() {
-    return {
-        english: "AI (Artificial Intelligence) refers to the simulation of human intelligence in machines that are programmed to think and learn. AI is used in a variety of fields such as machine learning, robotics, and natural language processing.",
-        sinhala: "AI (කෘතිම බුද්ධිය) යනු මනුෂ්‍ය බුද්ධිය කෘතිම පරිපාලනයෙන් සහ අධ්‍යයනයෙන් පරිවර්තනය කරන යන්ත්‍ර වශයෙන් අර්ථකථනය කෙරේ. කෘතිම බුද්ධිය මැෂින් ලර්නින්, රොබෝටික්ස් සහ ස්වභාවික භාෂා සැකසුම වැනි විවිධ ක්ෂේත්‍රවල භාවිතා වේ."
-    };
-}
+        "china": "China is the world's most populous country,

@@ -4,23 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NHB NOVA, My AI Assistant</title>
-    <link rel="shortcut icon" href="logo.jpg" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <img src="logo.jpg" alt="logo" id="logo">
     <h1>I'm <span id="name">N H B NOVA</span><span id="va"></span></h1>
-    <!-- Update the voice.gif path here if necessary -->
-    <img src="voice.gif" alt="voice" id="voice" style="display:none;"> <!-- Initially hide the voice.gif -->
+    <img src="voice.gif" alt="voice" id="voice" style="display:none;">
+
     <button id="btn">
         <img src="mic.svg" alt="mic"><span id="content"> Click here to talk to me</span>
     </button>
 
-    <!-- Language Change Button -->
-    <button id="languageBtn">
-        Switch to Sinhala
-    </button>
+    <button id="languageBtn">Switch to Sinhala</button>
+    
+    <!-- Logout Button -->
+    <button id="logoutBtn">Logout</button>
 
+    <script src="auth.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

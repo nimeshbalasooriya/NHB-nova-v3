@@ -147,3 +147,26 @@ function getAIModelInfo(model) {
 
     return aiModels[model] ? (currentLanguage === "si" ? aiModels[model].si : aiModels[model].en) : "I don't have information on this AI model.";
 }
+
+// Voice Recognition Setup
+if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = currentLanguage === "si" ? "si-LK" : "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.start();
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        takeCommand(transcript);
+    };
+
+    recognition.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+        speak(currentLanguage === "si" ? "කථන හඳුනාගැනීමේ දෝෂයක් ඇති විය." : "There was an error in speech recognition.");
+    };
+} else {
+    console.log("Speech recognition not supported in this browser.");
+    speak(currentLanguage === "si" ? "කථන හඳුනාගැනීම මෙම බ්‍රවුසරයේ සහාය නොදක්වයි." : "Speech recognition is not supported in this browser.");
+}

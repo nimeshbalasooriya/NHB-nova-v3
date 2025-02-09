@@ -1,9 +1,42 @@
-// Create the content div for displaying speech result
+// Dataset for programming languages, countries, technology companies, and presidents
+const programmingLanguages = [
+    { language: "Python", description: "Python is an interpreted, high-level programming language for general-purpose programming." },
+    { language: "JavaScript", description: "JavaScript is a high-level, just-in-time compiled programming language." },
+    { language: "Java", description: "Java is a high-level, class-based programming language for general-purpose use." },
+    { language: "C", description: "C is a general-purpose, procedural programming language for system programming." },
+    { language: "Ruby", description: "Ruby is a dynamic, open-source programming language with a focus on simplicity." }
+];
+
+const countries = [
+    { country: "Sri Lanka", capital: "Colombo", population: "21.7 million", language: "Sinhala, Tamil", currency: "Sri Lankan Rupee" },
+    { country: "United States", capital: "Washington, D.C.", population: "331 million", language: "English", currency: "US Dollar" },
+    { country: "Japan", capital: "Tokyo", population: "126.3 million", language: "Japanese", currency: "Yen" },
+    { country: "India", capital: "New Delhi", population: "1.38 billion", language: "Hindi, English", currency: "Indian Rupee" },
+    { country: "Germany", capital: "Berlin", population: "83 million", language: "German", currency: "Euro" }
+];
+
+const technologyCompanies = [
+    { company: "Apple", headquarters: "Cupertino, California, USA", industry: "Consumer Electronics, Software", founded: "1976" },
+    { company: "Microsoft", headquarters: "Redmond, Washington, USA", industry: "Software, Cloud Computing", founded: "1975" },
+    { company: "Google", headquarters: "Mountain View, California, USA", industry: "Internet Services, Advertising", founded: "1998" },
+    { company: "Amazon", headquarters: "Seattle, Washington, USA", industry: "E-commerce, Cloud Computing", founded: "1994" },
+    { company: "Tesla", headquarters: "Palo Alto, California, USA", industry: "Automotive, Energy", founded: "2003" }
+];
+
+const presidents = [
+    { country: "Sri Lanka", president: "Anura Kumara Dissanayaka" },
+    { country: "United States", president: "Joe Biden" },
+    { country: "Russia", president: "Vladimir Putin" },
+    { country: "China", president: "Xi Jinping" },
+    { country: "India", president: "Droupadi Murmu" }
+];
+
+// Create the content div to display the speech result
 let content = document.createElement("div");
 content.textContent = "Say something...";
 document.body.appendChild(content);
 
-// Create the voice div to show when the assistant is listening (with animation)
+// Create the voice div to show when the assistant is listening
 let voice = document.createElement("div");
 voice.id = "voice";
 voice.style.display = "none"; // Initially hidden
@@ -16,48 +49,6 @@ sidebar.id = "sidebar";
 sidebar.style.display = "none"; // Initially hidden
 document.body.appendChild(sidebar);
 
-// Dataset for programming languages
-const programmingLanguages = [
-    { language: "Python", description: "Python is an interpreted, high-level programming language for general-purpose programming. It emphasizes readability and simplicity." },
-    { language: "JavaScript", description: "JavaScript is a high-level, just-in-time compiled programming language that is widely used for building interactive websites." },
-    { language: "Java", description: "Java is a high-level, class-based, object-oriented programming language designed to have as few implementation dependencies as possible." },
-    { language: "C", description: "C is a general-purpose, procedural programming language that is widely used for system programming and embedded systems." },
-    { language: "Ruby", description: "Ruby is an interpreted, high-level, general-purpose programming language known for its simplicity and productivity." }
-];
-
-// Dataset for countries
-const countries = [
-    { country: "Sri Lanka", capital: "Colombo", population: "21.7 million", language: "Sinhala, Tamil", currency: "Sri Lankan Rupee" },
-    { country: "United States", capital: "Washington, D.C.", population: "331 million", language: "English", currency: "US Dollar" },
-    { country: "Japan", capital: "Tokyo", population: "126.3 million", language: "Japanese", currency: "Yen" },
-    { country: "India", capital: "New Delhi", population: "1.38 billion", language: "Hindi, English", currency: "Indian Rupee" },
-    { country: "Germany", capital: "Berlin", population: "83 million", language: "German", currency: "Euro" }
-];
-
-// Dataset for technology companies
-const technologyCompanies = [
-    { company: "Apple", headquarters: "Cupertino, California, USA", industry: "Consumer Electronics, Software", founded: "1976" },
-    { company: "Microsoft", headquarters: "Redmond, Washington, USA", industry: "Software, Cloud Computing", founded: "1975" },
-    { company: "Google", headquarters: "Mountain View, California, USA", industry: "Internet Services, Advertising", founded: "1998" },
-    { company: "Amazon", headquarters: "Seattle, Washington, USA", industry: "E-commerce, Cloud Computing", founded: "1994" },
-    { company: "Tesla", headquarters: "Palo Alto, California, USA", industry: "Automotive, Energy", founded: "2003" }
-];
-
-// Dataset for Presidents
-const presidents = [
-    { country: "Sri Lanka", president: "Anura Kumara Dissanayaka" },
-    { country: "United States", president: "Joe Biden" },
-    { country: "Russia", president: "Vladimir Putin" },
-    { country: "China", president: "Xi Jinping" },
-    { country: "India", president: "Droupadi Murmu" },
-    { country: "France", president: "Emmanuel Macron" },
-    { country: "Brazil", president: "Luiz Inácio Lula da Silva" },
-    { country: "Mexico", president: "Andrés Manuel López Obrador" },
-    { country: "South Korea", president: "Yoon Suk-yeol" },
-    { country: "Germany", president: "Frank-Walter Steinmeier" },
-    { country: "Turkey", president: "Recep Tayyip Erdoğan" }
-];
-
 // Function to speak text
 function speak(text) {
     let text_speak = new SpeechSynthesisUtterance(text);
@@ -68,7 +59,7 @@ function speak(text) {
     window.speechSynthesis.speak(text);
 }
 
-// Voice recognition setup
+// Initialize Speech Recognition API
 let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 if (speechRecognition) {
     let recognition = new speechRecognition();
@@ -135,29 +126,36 @@ function takeCommand(message) {
             speak("Sorry, I don't have information on that president.");  
         }  
     }  
-    // Existing commands  
-    else if (message.includes("who are you")) {  
-        speak("I am a voice assistant created by NHB LK Company.");
+    // Time command  
+    else if (message.includes("what is the time") || message.includes("tell me the time")) {  
+        let time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });  
+        speak(time);
     }  
+    // Date command  
+    else if (message.includes("what is the date") || message.includes("tell me the date")) {  
+        let date = new Date().toLocaleString(undefined, { day: "numeric", month: "short" });  
+        speak(date);
+    }  
+    // Open YouTube command  
     else if (message.includes("open youtube")) {  
         speak("Opening YouTube...");  
         window.open("https://youtube.com/", "_blank");
     }  
-    else if (message.includes("open google")) {  
-        speak("Opening Google...");  
-        window.open("https://google.com/", "_blank");
+    // Who are you command  
+    else if (message.includes("who are you")) {  
+        speak("I am a voice assistant created by NHB LK Company.");
     }  
-    else if (message.includes("time")) {  
-        let time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });  
-        speak(time);
+    // Joke command  
+    else if (message.includes("tell me a joke")) {  
+        speak("Why don't scientists trust atoms? Because they make up everything!");
     }  
-    else if (message.includes("date")) {  
-        let date = new Date().toLocaleString(undefined, { day: "numeric", month: "short" });  
-        speak(date);
+    // Stop listening command  
+    else if (message.includes("stop listening")) {  
+        speak("Goodbye, have a great day!");
+        recognition.stop(); // Stop the speech recognition
     }  
+    // Default command  
     else {  
-        let finalText = "This is what I found on the internet regarding " + message || message;
-        speak(finalText);  
-        window.open(`https://www.google.com/search?q=${message}`, "_blank");
+        speak("Sorry, I didn't understand that. Please try again.");
     }
 }

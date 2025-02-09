@@ -1,12 +1,38 @@
-// Full datasets
+// Create the 'Start Listening' button with your CSS styles
+let btn = document.createElement("button");
+btn.textContent = "Start Listening";
+btn.id = "btn"; // Add the button ID to apply CSS from your style
+document.body.appendChild(btn);
+
+// Create the content div for displaying speech result
+let content = document.createElement("div");
+content.id = "content";
+content.textContent = "Say something...";
+document.body.appendChild(content);
+
+// Create the voice div to show when the assistant is listening
+let voice = document.createElement("div");
+voice.id = "voice";
+voice.style.display = "none"; // Initially hide the voice element
+voice.textContent = "Listening...";
+document.body.appendChild(voice);
+
+// Sidebar for voice commands
+let sidebar = document.createElement('div');
+sidebar.id = 'sidebar';
+sidebar.style.display = "none"; // Initially hide the sidebar
+document.body.appendChild(sidebar);
+
+// Dataset for programming languages
 const programmingLanguages = [
-    { language: "Python", description: "Python is an interpreted, high-level programming language for general-purpose programming." },
-    { language: "JavaScript", description: "JavaScript is a high-level, just-in-time compiled programming language for building interactive websites." },
+    { language: "Python", description: "Python is an interpreted, high-level programming language for general-purpose programming. It emphasizes readability and simplicity." },
+    { language: "JavaScript", description: "JavaScript is a high-level, just-in-time compiled programming language that is widely used for building interactive websites." },
     { language: "Java", description: "Java is a high-level, class-based, object-oriented programming language designed to have as few implementation dependencies as possible." },
-    { language: "C", description: "C is a general-purpose, procedural programming language for system programming." },
-    { language: "Ruby", description: "Ruby is a dynamic, open-source programming language focused on simplicity and productivity." }
+    { language: "C", description: "C is a general-purpose, procedural programming language that is widely used for system programming and embedded systems." },
+    { language: "Ruby", description: "Ruby is an interpreted, high-level, general-purpose programming language known for its simplicity and productivity." }
 ];
 
+// Dataset for countries
 const countries = [
     { country: "Sri Lanka", capital: "Colombo", population: "21.7 million", language: "Sinhala, Tamil", currency: "Sri Lankan Rupee" },
     { country: "United States", capital: "Washington, D.C.", population: "331 million", language: "English", currency: "US Dollar" },
@@ -15,6 +41,7 @@ const countries = [
     { country: "Germany", capital: "Berlin", population: "83 million", language: "German", currency: "Euro" }
 ];
 
+// Dataset for technology companies
 const technologyCompanies = [
     { company: "Apple", headquarters: "Cupertino, California, USA", industry: "Consumer Electronics, Software", founded: "1976" },
     { company: "Microsoft", headquarters: "Redmond, Washington, USA", industry: "Software, Cloud Computing", founded: "1975" },
@@ -23,6 +50,7 @@ const technologyCompanies = [
     { company: "Tesla", headquarters: "Palo Alto, California, USA", industry: "Automotive, Energy", founded: "2003" }
 ];
 
+// Dataset for Presidents
 const presidents = [
     { country: "Sri Lanka", president: "Anura Kumara Dissanayaka" },
     { country: "United States", president: "Joe Biden" },
@@ -37,50 +65,32 @@ const presidents = [
     { country: "Turkey", president: "Recep Tayyip Erdoğan" }
 ];
 
-// Create the content div to display speech result
-let content = document.createElement("div");
-content.textContent = "Say something...";
-document.body.appendChild(content);
-
-// Create the voice div to show when the assistant is listening
-let voice = document.createElement("div");
-voice.id = "voice";
-voice.style.display = "none";  // Initially hidden
-voice.textContent = "Listening...";
-document.body.appendChild(voice);
-
-// Create the sidebar for voice commands
-let sidebar = document.createElement("div");
-sidebar.id = "sidebar";
-sidebar.style.display = "none"; // Initially hidden
-document.body.appendChild(sidebar);
-
-// Function to speak text
-function speak(text) {
-    let text_speak = new SpeechSynthesisUtterance(text);
-    text_speak.rate = 1;
-    text_speak.pitch = 1;
-    text_speak.volume = 1;
-    text_speak.lang = "en-GB"; // Correct language code
-    window.speechSynthesis.speak(text);
-}
-
-// Initialize Speech Recognition API
+// Speech Recognition Setup
 let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 if (speechRecognition) {
     let recognition = new speechRecognition();
+    recognition.onstart = () => {
+        voice.style.display = "block";  // Show the voice visualizer
+        voice.classList.add('pulse');   // Start pulse animation
+    };
+
+    recognition.onend = () => {
+        voice.classList.remove('pulse');  // Remove pulse animation when recognition ends
+        voice.style.display = "none";     // Hide the voice visualizer
+        btn.style.display = "flex";       // Show the button again after recognition ends
+    };
+
     recognition.onresult = (event) => {
         let currentIndex = event.resultIndex;
         let transcript = event.results[currentIndex][0].transcript;
         content.innerText = transcript;
-        takeCommand(transcript.toLowerCase());
+        takeCommand(transcript.toLowerCase());  // Handle the voice command
     };
 
-    // Automatically start voice recognition when the page loads
-    recognition.start();
-    voice.style.display = "block";  // Show the "Listening" text
-    sidebar.style.display = "block"; // Show the sidebar
-    voice.classList.add("pulse"); // Add the animation class for mic animation
+    btn.addEventListener("click", () => {
+        recognition.start();  // Start the recognition
+        btn.style.display = "none";  // Hide the button once recognition starts
+    });
 
 } else {
     alert("Speech Recognition API is not supported by your browser.");
@@ -88,52 +98,87 @@ if (speechRecognition) {
 
 // Function to handle voice commands
 function takeCommand(message) {
-    voice.style.display = "none"; // Hide the "Listening" text after processing
-    voice.classList.remove("pulse"); // Remove animation class
-    sidebar.style.display = "none"; // Hide the sidebar when command is processed
+    sidebar.style.display = "block"; // Show the sidebar when a command is recognized
 
-    // Hello command
+    // Add the recognized command to the sidebar
+    let commandText = document.createElement('div');
+    commandText.classList.add('command-item');
+    commandText.innerText = message;
+    sidebar.appendChild(commandText);
+
+    // Hello command  
     if (message.includes("hello") || message.includes("hey")) {
         speak("Hello Sir, what can I help you with?");
+    }  
+    // Programming languages details  
+    else if (message.includes("python") || message.includes("javascript") || message.includes("java") || message.includes("c") || message.includes("ruby")) {  
+        const language = programmingLanguages.find(lang => message.includes(lang.language.toLowerCase()));  
+        if (language) {  
+            speak(`${language.language}: ${language.description}`);  
+        } else {  
+            speak("Sorry, I don't have information on that programming language.");  
+        }  
+    }  
+    // Countries details  
+    else if (message.includes("sri lanka") || message.includes("united states") || message.includes("japan") || message.includes("india") || message.includes("germany")) {  
+        const country = countries.find(item => message.includes(item.country.toLowerCase()));  
+        if (country) {  
+            speak(`${country.country} - Capital: ${country.capital}, Population: ${country.population}, Language: ${country.language}, Currency: ${country.currency}`);  
+        } else {  
+            speak("Sorry, I don't have information on that country.");  
+        }  
+    }  
+    // Technology companies details  
+    else if (message.includes("apple") || message.includes("microsoft") || message.includes("google") || message.includes("amazon") || message.includes("tesla")) {  
+        const company = technologyCompanies.find(item => message.includes(item.company.toLowerCase()));  
+        if (company) {  
+            speak(`${company.company} - Headquarters: ${company.headquarters}, Industry: ${company.industry}, Founded: ${company.founded}`);  
+        } else {  
+            speak("Sorry, I don't have information on that company.");  
+        }  
+    }  
+    // Presidents details  
+    else if (message.includes("president of")) {  
+        const president = presidents.find(item => message.includes(item.country.toLowerCase()));  
+        if (president) {  
+            speak(`The President of ${president.country} is ${president.president}`);  
+        } else {  
+            speak("Sorry, I don't have information on that president.");  
+        }  
+    }  
+    // Existing commands  
+    else if (message.includes("who are you")) {  
+        speak("I am a voice assistant created by NHB LK Company.");
+    }  
+    else if (message.includes("open youtube")) {  
+        speak("Opening YouTube...");  
+        window.open("https://youtube.com/", "_blank");
+    }  
+    else if (message.includes("open google")) {  
+        speak("Opening Google...");  
+        window.open("https://google.com/", "_blank");
+    }  
+    else if (message.includes("time")) {  
+        let time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });  
+        speak(time);
+    }  
+    else if (message.includes("date")) {  
+        let date = new Date().toLocaleString(undefined, { day: "numeric", month: "short" });  
+        speak(date);
+    }  
+    else {  
+        let finalText = "This is what I found on the internet regarding " + message || message;
+        speak(finalText);  
+        window.open(`https://www.google.com/search?q=${message}`, "_blank");
     }
-    // Programming languages details
-    else if (message.includes("python") || message.includes("javascript") || message.includes("java") || message.includes("c") || message.includes("ruby")) {
-        const language = programmingLanguages.find(lang => message.includes(lang.language.toLowerCase()));
-        if (language) {
-            speak(`${language.language}: ${language.description}`);
-        } else {
-            speak("Sorry, I don't have information on that programming language.");
-        }
-    }
-    // Countries details
-    else if (message.includes("sri lanka") || message.includes("united states") || message.includes("japan") || message.includes("india") || message.includes("germany")) {
-        const country = countries.find(item => message.includes(item.country.toLowerCase()));
-        if (country) {
-            speak(`${country.country} - Capital: ${country.capital}, Population: ${country.population}, Language: ${country.language}, Currency: ${country.currency}`);
-        } else {
-            speak("Sorry, I don't have information on that country.");
-        }
-    }
-    // Technology companies details
-    else if (message.includes("apple") || message.includes("microsoft") || message.includes("google") || message.includes("amazon") || message.includes("tesla")) {
-        const company = technologyCompanies.find(item => message.includes(item.company.toLowerCase()));
-        if (company) {
-            speak(`${company.company} - Headquarters: ${company.headquarters}, Industry: ${company.industry}, Founded: ${company.founded}`);
-        } else {
-            speak("Sorry, I don't have information on that company.");
-        }
-    }
-    // Presidents details
-    else if (message.includes("president of")) {
-        const president = presidents.find(item => message.includes(item.country.toLowerCase()));
-        if (president) {
-            speak(`The President of ${president.country} is ${president.president}`);
-        } else {
-            speak("Sorry, I don't have information on that president.");
-        }
-    }
-    // Default command if no specific match
-    else {
-        speak("Sorry, I didn't understand that. Please try again.");
-    }
+} 
+
+// Function to speak the response
+function speak(text) {
+    let text_speak = new SpeechSynthesisUtterance(text);
+    text_speak.rate = 1;
+    text_speak.pitch = 1;
+    text_speak.volume = 1;
+    text_speak.lang = "en-GB";
+    window.speechSynthesis.speak(text_speak);
 }

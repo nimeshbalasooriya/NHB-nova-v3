@@ -134,27 +134,8 @@ function takeCommand(message) {
             speak("Sorry, I don't have information on that country.");
         }
     }
-    // Handle presidents
-    else if (message.includes("president of")) {
-        const country = message.split("president of ")[1];
-        const president = presidents.find(item => country.includes(item.country.toLowerCase()));
-        if (president) {
-            speak(`The president of ${president.country} is ${president.president}.`);
-        } else {
-            speak("Sorry, I don't have information on that president.");
-        }
-    }
-    // Search for IT companies
-    else if (message.includes("it companies")) {
-        const company = itCompanies.find(item => message.includes(item.company.toLowerCase()));
-        if (company) {
-            speak(`${company.company}: ${company.description}`);
-        } else {
-            speak("Sorry, I don't have information on that IT company.");
-        }
-    }
-    // Search for AI apps
-    else if (message.includes("ai apps")) {
+    // Handle AI apps
+    else if (message.includes("chatgpt") || message.includes("google assistant") || message.includes("siri") || message.includes("alexa") || message.includes("ibm watson")) {
         const app = aiApps.find(item => message.includes(item.app.toLowerCase()));
         if (app) {
             speak(`${app.app}: ${app.description}`);

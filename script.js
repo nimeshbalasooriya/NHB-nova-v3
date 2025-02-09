@@ -41,6 +41,17 @@ const itCompanies = [
     { company: "Facebook", description: "Facebook, Inc. (now Meta Platforms) is a social media conglomerate and technology company known for its social networking platform and virtual reality ventures." }
 ];
 
+// Buddhist Sites dataset
+const buddhistSitesInSriLanka = [
+    { name: "Sri Dalada Maligawa", location: "Kandy", description: "Sri Dalada Maligawa (Temple of the Sacred Tooth Relic) is one of the holiest places for Buddhists in Sri Lanka, housing the sacred tooth relic of the Buddha." },
+    { name: "Anuradhapura", location: "Anuradhapura", description: "Anuradhapura is an ancient city that was the capital of Sri Lanka for many centuries, and it is home to some of the oldest and most important Buddhist sites, including the Sri Maha Bodhi tree." },
+    { name: "Ruwanwelisaya", location: "Anuradhapura", description: "Ruwanwelisaya is a stupa located in Anuradhapura and is one of the most iconic and significant Buddhist monuments in Sri Lanka, symbolizing the teachings of the Buddha." },
+    { name: "Dambulla Cave Temple", location: "Dambulla", description: "Dambulla Cave Temple, also known as the Golden Temple of Dambulla, is a complex of caves filled with statues and murals depicting the life of the Buddha." },
+    { name: "Mihintale", location: "Mihintale", description: "Mihintale is considered the cradle of Buddhism in Sri Lanka. It is where King Devanampiya Tissa first met the Buddhist monk Mahinda, introducing Buddhism to the island." },
+    { name: "Seetha Amman Temple", location: "Nuwara Eliya", description: "Seetha Amman Temple is a Hindu-Buddhist temple located in Nuwara Eliya. It is a sacred site for both Buddhists and Hindus, known for its connection to the Ramayana." },
+    { name: "Kiri Vehera", location: "Tissamaharama", description: "Kiri Vehera is an ancient Buddhist stupa in Tissamaharama, part of the southern Buddhist triangle, and an important pilgrimage site." }
+];
+
 // Speak function
 function speak(text) {
     let text_speak = new SpeechSynthesisUtterance(text);
@@ -89,34 +100,14 @@ function takeCommand(message) {
         speak("Opening YouTube...");
         window.open("https://youtube.com/", "_blank");
     }
-    else if (message.includes("open google") || message.includes("go to google")) {
-        speak("Opening Google...");
-        window.open("https://google.com/", "_blank");
-    }
-    else if (message.includes("open facebook") || message.includes("go to facebook")) {
-        speak("Opening Facebook...");
-        window.open("https://facebook.com/", "_blank");
-    }
-    else if (message.includes("open instagram") || message.includes("go to instagram")) {
-        speak("Opening Instagram...");
-        window.open("https://instagram.com/", "_blank");
-    }
-    else if (message.includes("open calculator")) {
-        speak("Opening Calculator...");
-        window.open("calculator://");
-    }
-    else if (message.includes("open whatsapp")) {
-        speak("Opening WhatsApp...");
-        window.open("whatsapp://");
-    }
-    // Commands for time and date
-    else if (message.includes("time")) {
-        let time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
-        speak(time);
-    }
-    else if (message.includes("date")) {
-        let date = new Date().toLocaleString(undefined, { day: "numeric", month: "short" });
-        speak(date);
+    // Handle Buddhist Sites
+    else if (message.includes("sri dalada maligawa") || message.includes("ruwanwelisaya") || message.includes("dambulla cave temple") || message.includes("mihintale") || message.includes("kiri vehera") || message.includes("seetha amman temple")) {
+        const site = buddhistSitesInSriLanka.find(item => message.includes(item.name.toLowerCase()));
+        if (site) {
+            speak(`${site.name}, located in ${site.location}: ${site.description}`);
+        } else {
+            speak("Sorry, I don't have information on that Buddhist site.");
+        }
     }
     // Handle programming languages
     else if (message.includes("python") || message.includes("javascript") || message.includes("java") || message.includes("c") || message.includes("ruby") || message.includes("go") || message.includes("swift")) {
@@ -142,66 +133,4 @@ function takeCommand(message) {
         if (app) {
             speak(`${app.app}: ${app.description}`);
         } else {
-            speak("Sorry, I don't have information on that AI app.");
-        }
-    }
-}
-
-// Search bar function to handle input and display relevant results
-searchBar.addEventListener("input", () => {
-    let searchTerm = searchBar.value.toLowerCase();
-    let searchResults = "";
-
-    // Searching through all datasets
-    const matchedProgrammingLanguages = programmingLanguages.filter(lang =>
-        lang.language.toLowerCase().includes(searchTerm)
-    );
-    const matchedCountries = countries.filter(country =>
-        country.country.toLowerCase().includes(searchTerm)
-    );
-    const matchedAiApps = aiApps.filter(app =>
-        app.app.toLowerCase().includes(searchTerm)
-    );
-    const matchedItCompanies = itCompanies.filter(company =>
-        company.company.toLowerCase().includes(searchTerm)
-    );
-
-    // Displaying search results
-    if (matchedProgrammingLanguages.length > 0) {
-        searchResults += "<h3>Programming Languages:</h3><ul>";
-        matchedProgrammingLanguages.forEach(lang => {
-            searchResults += `<li><strong>${lang.language}</strong>: ${lang.description}</li>`;
-        });
-        searchResults += "</ul>";
-    }
-
-    if (matchedCountries.length > 0) {
-        searchResults += "<h3>Countries:</h3><ul>";
-        matchedCountries.forEach(country => {
-            searchResults += `<li><strong>${country.country}</strong>: Capital - ${country.capital}, Population - ${country.population}, Language - ${country.language}, Currency - ${country.currency}</li>`;
-        });
-        searchResults += "</ul>";
-    }
-
-    if (matchedAiApps.length > 0) {
-        searchResults += "<h3>AI Apps:</h3><ul>";
-        matchedAiApps.forEach(app => {
-            searchResults += `<li><strong>${app.app}</strong>: ${app.description}</li>`;
-        });
-        searchResults += "</ul>";
-    }
-
-    if (matchedItCompanies.length > 0) {
-        searchResults += "<h3>IT Companies:</h3><ul>";
-        matchedItCompanies.forEach(company => {
-            searchResults += `<li><strong>${company.company}</strong>: ${company.description}</li>`;
-        });
-        searchResults += "</ul>";
-    }
-
-    if (searchResults === "") {
-        searchResults = "<p>No matching results found.</p>";
-    }
-
-    result.innerHTML = searchResults;
-});
+            speak("

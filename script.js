@@ -1,9 +1,3 @@
-// Create the 'Start Listening' button with your CSS styles
-let btn = document.createElement("button");
-btn.textContent = "Start Listening";
-btn.id = "btn"; // Add the button ID to apply CSS from your style
-document.body.appendChild(btn);
-
 // Create the content div for displaying speech result
 let content = document.createElement("div");
 content.textContent = "Say something...";
@@ -78,11 +72,8 @@ if (speechRecognition) {
         takeCommand(transcript.toLowerCase());
     };
 
-    btn.addEventListener("click", () => {
-        recognition.start();
-        voice.style.display = "block";
-        btn.style.display = "none";
-    });
+    recognition.start();
+    voice.style.display = "block";
 
 } else {
     alert("Speech Recognition API is not supported by your browser.");
@@ -91,8 +82,7 @@ if (speechRecognition) {
 // Function to handle voice commands
 function takeCommand(message) {
     voice.style.display = "none";
-    btn.style.display = "flex";
-
+    
     // Hello command  
     if (message.includes("hello") || message.includes("hey")) {
         speak("Hello Sir, what can I help you with?");

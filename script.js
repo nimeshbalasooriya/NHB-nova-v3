@@ -1,10 +1,10 @@
-// Dataset for programming languages, countries, technology companies, and presidents
+// Full datasets
 const programmingLanguages = [
     { language: "Python", description: "Python is an interpreted, high-level programming language for general-purpose programming." },
-    { language: "JavaScript", description: "JavaScript is a high-level, just-in-time compiled programming language." },
-    { language: "Java", description: "Java is a high-level, class-based programming language for general-purpose use." },
+    { language: "JavaScript", description: "JavaScript is a high-level, just-in-time compiled programming language for building interactive websites." },
+    { language: "Java", description: "Java is a high-level, class-based, object-oriented programming language designed to have as few implementation dependencies as possible." },
     { language: "C", description: "C is a general-purpose, procedural programming language for system programming." },
-    { language: "Ruby", description: "Ruby is a dynamic, open-source programming language with a focus on simplicity." }
+    { language: "Ruby", description: "Ruby is a dynamic, open-source programming language focused on simplicity and productivity." }
 ];
 
 const countries = [
@@ -28,10 +28,16 @@ const presidents = [
     { country: "United States", president: "Joe Biden" },
     { country: "Russia", president: "Vladimir Putin" },
     { country: "China", president: "Xi Jinping" },
-    { country: "India", president: "Droupadi Murmu" }
+    { country: "India", president: "Droupadi Murmu" },
+    { country: "France", president: "Emmanuel Macron" },
+    { country: "Brazil", president: "Luiz Inácio Lula da Silva" },
+    { country: "Mexico", president: "Andrés Manuel López Obrador" },
+    { country: "South Korea", president: "Yoon Suk-yeol" },
+    { country: "Germany", president: "Frank-Walter Steinmeier" },
+    { country: "Turkey", president: "Recep Tayyip Erdoğan" }
 ];
 
-// Create the content div to display the speech result
+// Create the content div to display speech result
 let content = document.createElement("div");
 content.textContent = "Say something...";
 document.body.appendChild(content);
@@ -39,7 +45,7 @@ document.body.appendChild(content);
 // Create the voice div to show when the assistant is listening
 let voice = document.createElement("div");
 voice.id = "voice";
-voice.style.display = "none"; // Initially hidden
+voice.style.display = "none";  // Initially hidden
 voice.textContent = "Listening...";
 document.body.appendChild(voice);
 
@@ -55,7 +61,7 @@ function speak(text) {
     text_speak.rate = 1;
     text_speak.pitch = 1;
     text_speak.volume = 1;
-    text_speak.lang = "en-GB";  // Correct language code
+    text_speak.lang = "en-GB"; // Correct language code
     window.speechSynthesis.speak(text);
 }
 
@@ -72,7 +78,7 @@ if (speechRecognition) {
 
     // Automatically start voice recognition when the page loads
     recognition.start();
-    voice.style.display = "block"; // Show the "Listening" text
+    voice.style.display = "block";  // Show the "Listening" text
     sidebar.style.display = "block"; // Show the sidebar
     voice.classList.add("pulse"); // Add the animation class for mic animation
 
@@ -86,76 +92,48 @@ function takeCommand(message) {
     voice.classList.remove("pulse"); // Remove animation class
     sidebar.style.display = "none"; // Hide the sidebar when command is processed
 
-    // Hello command  
+    // Hello command
     if (message.includes("hello") || message.includes("hey")) {
         speak("Hello Sir, what can I help you with?");
-    }  
-    // Programming languages details  
-    else if (message.includes("python") || message.includes("javascript") || message.includes("java") || message.includes("c") || message.includes("ruby")) {  
-        const language = programmingLanguages.find(lang => message.includes(lang.language.toLowerCase()));  
-        if (language) {  
-            speak(`${language.language}: ${language.description}`);  
-        } else {  
-            speak("Sorry, I don't have information on that programming language.");  
-        }  
-    }  
-    // Countries details  
-    else if (message.includes("sri lanka") || message.includes("united states") || message.includes("japan") || message.includes("india") || message.includes("germany")) {  
-        const country = countries.find(item => message.includes(item.country.toLowerCase()));  
-        if (country) {  
-            speak(`${country.country} - Capital: ${country.capital}, Population: ${country.population}, Language: ${country.language}, Currency: ${country.currency}`);  
-        } else {  
-            speak("Sorry, I don't have information on that country.");  
-        }  
-    }  
-    // Technology companies details  
-    else if (message.includes("apple") || message.includes("microsoft") || message.includes("google") || message.includes("amazon") || message.includes("tesla")) {  
-        const company = technologyCompanies.find(item => message.includes(item.company.toLowerCase()));  
-        if (company) {  
-            speak(`${company.company} - Headquarters: ${company.headquarters}, Industry: ${company.industry}, Founded: ${company.founded}`);  
-        } else {  
-            speak("Sorry, I don't have information on that company.");  
-        }  
-    }  
-    // Presidents details  
-    else if (message.includes("president of")) {  
-        const president = presidents.find(item => message.includes(item.country.toLowerCase()));  
-        if (president) {  
-            speak(`The President of ${president.country} is ${president.president}`);  
-        } else {  
-            speak("Sorry, I don't have information on that president.");  
-        }  
-    }  
-    // Time command  
-    else if (message.includes("what is the time") || message.includes("tell me the time")) {  
-        let time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });  
-        speak(time);
-    }  
-    // Date command  
-    else if (message.includes("what is the date") || message.includes("tell me the date")) {  
-        let date = new Date().toLocaleString(undefined, { day: "numeric", month: "short" });  
-        speak(date);
-    }  
-    // Open YouTube command  
-    else if (message.includes("open youtube")) {  
-        speak("Opening YouTube...");  
-        window.open("https://youtube.com/", "_blank");
-    }  
-    // Who are you command  
-    else if (message.includes("who are you")) {  
-        speak("I am a voice assistant created by NHB LK Company.");
-    }  
-    // Joke command  
-    else if (message.includes("tell me a joke")) {  
-        speak("Why don't scientists trust atoms? Because they make up everything!");
-    }  
-    // Stop listening command  
-    else if (message.includes("stop listening")) {  
-        speak("Goodbye, have a great day!");
-        recognition.stop(); // Stop the speech recognition
-    }  
-    // Default command  
-    else {  
+    }
+    // Programming languages details
+    else if (message.includes("python") || message.includes("javascript") || message.includes("java") || message.includes("c") || message.includes("ruby")) {
+        const language = programmingLanguages.find(lang => message.includes(lang.language.toLowerCase()));
+        if (language) {
+            speak(`${language.language}: ${language.description}`);
+        } else {
+            speak("Sorry, I don't have information on that programming language.");
+        }
+    }
+    // Countries details
+    else if (message.includes("sri lanka") || message.includes("united states") || message.includes("japan") || message.includes("india") || message.includes("germany")) {
+        const country = countries.find(item => message.includes(item.country.toLowerCase()));
+        if (country) {
+            speak(`${country.country} - Capital: ${country.capital}, Population: ${country.population}, Language: ${country.language}, Currency: ${country.currency}`);
+        } else {
+            speak("Sorry, I don't have information on that country.");
+        }
+    }
+    // Technology companies details
+    else if (message.includes("apple") || message.includes("microsoft") || message.includes("google") || message.includes("amazon") || message.includes("tesla")) {
+        const company = technologyCompanies.find(item => message.includes(item.company.toLowerCase()));
+        if (company) {
+            speak(`${company.company} - Headquarters: ${company.headquarters}, Industry: ${company.industry}, Founded: ${company.founded}`);
+        } else {
+            speak("Sorry, I don't have information on that company.");
+        }
+    }
+    // Presidents details
+    else if (message.includes("president of")) {
+        const president = presidents.find(item => message.includes(item.country.toLowerCase()));
+        if (president) {
+            speak(`The President of ${president.country} is ${president.president}`);
+        } else {
+            speak("Sorry, I don't have information on that president.");
+        }
+    }
+    // Default command if no specific match
+    else {
         speak("Sorry, I didn't understand that. Please try again.");
     }
 }

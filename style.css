@@ -20,7 +20,7 @@ body {
 
 /* Logo Styling */
 #logo {
-    width: 60vw;
+    width: 50vw;
     border-radius: 10px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.7);
 }
@@ -29,12 +29,12 @@ body {
 h1 {
     color: aliceblue;
     font-family: "Protest Guerrilla", sans-serif;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
 #name {
     color: rgb(212, 43, 122);
-    font-size: 70px;
+    font-size: 90px;
 }
 
 #va {
@@ -44,7 +44,7 @@ h1 {
 
 /* Voice Icon Styling */
 #voice {
-    width: 300px;
+    width: 200px;
     display: none;
     animation: pulse 1.5s infinite;
 }

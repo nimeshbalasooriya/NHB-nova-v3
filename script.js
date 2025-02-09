@@ -2,7 +2,7 @@ let btn = document.querySelector("#btn");
 let content = document.querySelector("#content");
 let voice = document.querySelector("#voice");
 
-// Example datasets (can be extended as needed)
+// Example datasets
 const programmingLanguages = [
     { language: "Python", description: "Python is an interpreted, high-level programming language for general-purpose programming. It emphasizes readability and simplicity." },
     { language: "JavaScript", description: "JavaScript is a high-level, just-in-time compiled programming language that is widely used for building interactive websites." },
@@ -23,21 +23,6 @@ const countries = [
     { country: "Australia", capital: "Canberra", population: "25 million", language: "English", currency: "Australian Dollar" }
 ];
 
-const presidents = [
-    { country: "Sri Lanka", president: "Anura Kumara Dissanayaka" },
-    { country: "United States", president: "Joe Biden" },
-    { country: "Russia", president: "Vladimir Putin" },
-    { country: "China", president: "Xi Jinping" },
-    { country: "India", president: "Droupadi Murmu" },
-    { country: "France", president: "Emmanuel Macron" },
-    { country: "Brazil", president: "Luiz Inácio Lula da Silva" },
-    { country: "Mexico", president: "Andrés Manuel López Obrador" },
-    { country: "South Korea", president: "Yoon Suk-yeol" },
-    { country: "Germany", president: "Frank-Walter Steinmeier" },
-    { country: "Turkey", president: "Recep Tayyip Erdoğan" }
-];
-
-// AI apps dataset
 const aiApps = [
     { app: "ChatGPT", description: "ChatGPT is a state-of-the-art language model developed by OpenAI for natural language processing tasks, including conversational AI." },
     { app: "Google Assistant", description: "Google Assistant is a virtual assistant powered by AI, capable of performing tasks and answering questions based on voice input." },
@@ -46,7 +31,6 @@ const aiApps = [
     { app: "IBM Watson", description: "IBM Watson is an AI platform offering various AI services, including natural language processing, machine learning, and data analytics." }
 ];
 
-// IT companies dataset
 const itCompanies = [
     { company: "Apple", description: "Apple Inc. is a multinational technology company that designs, manufactures, and sells consumer electronics, software, and services." },
     { company: "Google", description: "Google LLC is a multinational technology company specializing in Internet-related services and products, including online advertising, search, and cloud computing." },
@@ -63,19 +47,6 @@ function speak(text) {
     text_speak.volume = 1;
     text_speak.lang = "en-GB";  // Adjust to desired language
     window.speechSynthesis.speak(text_speak);
-}
-
-// Function to wish based on the time of day
-function wishMe() {
-    let day = new Date();
-    let hours = day.getHours();
-    if (hours >= 0 && hours < 12) {
-        speak("Good Morning Sir");
-    } else if (hours >= 12 && hours < 16) {
-        speak("Good Afternoon Sir");
-    } else {
-        speak("Good Evening Sir");
-    }
 }
 
 // Initialize Speech Recognition
@@ -165,24 +136,16 @@ function takeCommand(message) {
     }
     // Handle presidents
     else if (message.includes("president of")) {
-        const president = presidents.find(item => message.includes(item.country.toLowerCase()));
+        const country = message.split("president of ")[1];
+        const president = presidents.find(item => country.includes(item.country.toLowerCase()));
         if (president) {
-            speak(`The President of ${president.country} is ${president.president}`);
+            speak(`The president of ${president.country} is ${president.president}.`);
         } else {
             speak("Sorry, I don't have information on that president.");
         }
     }
-    // Handle AI apps
-    else if (message.includes("chatgpt") || message.includes("google assistant") || message.includes("siri") || message.includes("alexa") || message.includes("ibm watson")) {
-        const app = aiApps.find(item => message.includes(item.app.toLowerCase()));
-        if (app) {
-            speak(`${app.app}: ${app.description}`);
-        } else {
-            speak("Sorry, I don't have information on that AI app.");
-        }
-    }
-    // Handle IT companies
-    else if (message.includes("apple") || message.includes("google") || message.includes("microsoft") || message.includes("amazon") || message.includes("facebook")) {
+    // Search for IT companies
+    else if (message.includes("it companies")) {
         const company = itCompanies.find(item => message.includes(item.company.toLowerCase()));
         if (company) {
             speak(`${company.company}: ${company.description}`);
@@ -190,14 +153,13 @@ function takeCommand(message) {
             speak("Sorry, I don't have information on that IT company.");
         }
     }
-    // Google search for unknown queries
-    else if (message.includes("search")) {
-        const query = message.replace("search", "").trim();
-        speak(`Searching Google for ${query}...`);
-        window.open(`https://www.google.com/search?q=${query}`, "_blank");
-    }
-    // Default response for unknown commands
-    else {
-        speak("I didn't understand that. Can you please repeat?");
+    // Search for AI apps
+    else if (message.includes("ai apps")) {
+        const app = aiApps.find(item => message.includes(item.app.toLowerCase()));
+        if (app) {
+            speak(`${app.app}: ${app.description}`);
+        } else {
+            speak("Sorry, I don't have information on that AI app.");
+        }
     }
 }

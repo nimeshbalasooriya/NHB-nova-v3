@@ -9,7 +9,7 @@
 body {
     width: 100%;
     height: 100%;
-    background-color: black;
+    background-color: #121212; /* Dark background for better contrast */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -17,75 +17,51 @@ body {
     flex-direction: column;
     font-family: "Protest Guerrilla", sans-serif;
     position: relative;
-    overflow: hidden;
-    color: aliceblue;
+    color: white;
+    padding: 20px;
 }
 
 /* Logo */
 #logo {
     width: 20vw;
-    transition: transform 0.3s ease;
-}
-
-#logo:hover {
-    transform: scale(1.1);
 }
 
 /* Title */
 h1 {
     color: aliceblue;
-    font-size: 3rem;
-    text-align: center;
-    letter-spacing: 2px;
+    font-size: 36px;
+    font-family: "Protest Guerrilla", sans-serif;
 }
 
 #name {
     color: rgb(212, 43, 122);
     font-size: 45px;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-    text-align: center;
 }
 
 #va {
     color: rgb(43, 206, 212);
-    font-size: 45px;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-    text-align: center;
+    font-size: 45px; 
 }
 
-/* Voice visualizer (for mic animation) */
+/* Voice visualizer (mic animation) */
 #voice {
     width: 100px;
-    display: none;
-    margin-top: 20px;
-    border-radius: 10px;
-    background: linear-gradient(45deg, #ff8a00, #e52e71);
-    height: 10px;
-    transition: all 0.3s ease;
+    display: none; /* Initially hidden */
     text-align: center;
-    font-size: 18px;
     color: white;
-    padding: 5px;
+    font-size: 18px;
+    font-weight: bold;
 }
 
-/* Pulse animation for mic when listening */
+/* Pulse animation for mic */
 @keyframes pulse {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.2);
-        opacity: 0.7;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
 #voice.pulse {
-    animation: pulse 1.5s infinite ease-in-out;
+    animation: pulse 1.5s infinite;
 }
 
 /* Sidebar for voice commands */
@@ -95,62 +71,86 @@ h1 {
     right: 20px;
     width: 250px;
     height: 400px;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 15px;
+    border-radius: 10px;
     overflow-y: auto;
     color: white;
     font-size: 18px;
     font-family: Arial, sans-serif;
-    box-shadow: 2px 2px 15px rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    animation: fadeIn 1s ease-out;
+    box-shadow: 2px 2px 10px rgba(255, 255, 255, 0.2);
+    display: none; /* Initially hidden */
 }
 
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Command text styling */
 .command-text {
     margin-bottom: 10px;
     padding: 10px;
     background: rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
+    border-radius: 5px;
     font-weight: bold;
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
-    transition: background 0.3s ease;
 }
 
-.command-text:hover {
-    background: rgba(255, 255, 255, 0.4);
-    transform: scale(1.05);
-}
-
-/* Button Styling */
+/* Styles for buttons or text in the sidebar */
 button {
-    padding: 15px 25px;
-    font-size: 18px;
-    border: none;
-    background: rgb(43, 206, 212);
+    background-color: rgb(212, 43, 122);
     color: white;
-    border-radius: 30px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
     cursor: pointer;
-    transition: all 0.3s ease;
 }
 
 button:hover {
-    background: rgb(212, 43, 122);
-    transform: scale(1.05);
+    background-color: rgb(255, 82, 182);
 }
 
-button:active {
-    transform: scale(0.98);
+/* Text in the content area */
+#content {
+    font-size: 18px;
+    font-weight: bold;
+    color: aliceblue;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Additional layout for the body */
+#sidebar {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 300px;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+/* Ensure the voice visualizer (mic animation) is displayed on active commands */
+#voice {
+    font-size: 18px;
+    text-align: center;
+    display: block;
+    color: white;
+    font-weight: bold;
+}
+
+/* Style for each command item */
+.command-item {
+    margin-bottom: 10px;
+    padding: 12px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+/* Style for speech recognition commands */
+.command-text {
+    font-size: 18px;
+    color: white;
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
 }

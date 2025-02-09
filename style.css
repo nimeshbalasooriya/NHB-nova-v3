@@ -53,7 +53,7 @@ h1 {
     text-align: center;
 }
 
-/* Voice visualizer */
+/* Voice visualizer (for mic animation) */
 #voice {
     width: 100px;
     display: none;
@@ -62,6 +62,30 @@ h1 {
     background: linear-gradient(45deg, #ff8a00, #e52e71);
     height: 10px;
     transition: all 0.3s ease;
+    text-align: center;
+    font-size: 18px;
+    color: white;
+    padding: 5px;
+}
+
+/* Pulse animation for mic when listening */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+#voice.pulse {
+    animation: pulse 1.5s infinite ease-in-out;
 }
 
 /* Sidebar for voice commands */
@@ -108,13 +132,6 @@ h1 {
 .command-text:hover {
     background: rgba(255, 255, 255, 0.4);
     transform: scale(1.05);
-}
-
-/* Flexbox center alignment */
-.flex-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 /* Button Styling */

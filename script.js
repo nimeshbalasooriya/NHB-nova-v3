@@ -140,7 +140,7 @@ function takeCommand(message) {
         }
     }
     // Handle presidents
-    else if (message.includes("president of")) {
+    else if (message.includes("president ")) {
         const president = presidents.find(item => message.includes(item.country.toLowerCase()));
         if (president) {
             speak(`The President of ${president.country} is ${president.president}`);

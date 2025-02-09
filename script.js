@@ -1,6 +1,8 @@
 let btn = document.querySelector("#btn");
 let content = document.querySelector("#content");
 let voice = document.querySelector("#voice");
+let searchBar = document.querySelector("#search-bar");
+let result = document.querySelector("#result");
 
 // Example datasets
 const programmingLanguages = [
@@ -144,3 +146,62 @@ function takeCommand(message) {
         }
     }
 }
+
+// Search bar function to handle input and display relevant results
+searchBar.addEventListener("input", () => {
+    let searchTerm = searchBar.value.toLowerCase();
+    let searchResults = "";
+
+    // Searching through all datasets
+    const matchedProgrammingLanguages = programmingLanguages.filter(lang =>
+        lang.language.toLowerCase().includes(searchTerm)
+    );
+    const matchedCountries = countries.filter(country =>
+        country.country.toLowerCase().includes(searchTerm)
+    );
+    const matchedAiApps = aiApps.filter(app =>
+        app.app.toLowerCase().includes(searchTerm)
+    );
+    const matchedItCompanies = itCompanies.filter(company =>
+        company.company.toLowerCase().includes(searchTerm)
+    );
+
+    // Displaying search results
+    if (matchedProgrammingLanguages.length > 0) {
+        searchResults += "<h3>Programming Languages:</h3><ul>";
+        matchedProgrammingLanguages.forEach(lang => {
+            searchResults += `<li><strong>${lang.language}</strong>: ${lang.description}</li>`;
+        });
+        searchResults += "</ul>";
+    }
+
+    if (matchedCountries.length > 0) {
+        searchResults += "<h3>Countries:</h3><ul>";
+        matchedCountries.forEach(country => {
+            searchResults += `<li><strong>${country.country}</strong>: Capital - ${country.capital}, Population - ${country.population}, Language - ${country.language}, Currency - ${country.currency}</li>`;
+        });
+        searchResults += "</ul>";
+    }
+
+    if (matchedAiApps.length > 0) {
+        searchResults += "<h3>AI Apps:</h3><ul>";
+        matchedAiApps.forEach(app => {
+            searchResults += `<li><strong>${app.app}</strong>: ${app.description}</li>`;
+        });
+        searchResults += "</ul>";
+    }
+
+    if (matchedItCompanies.length > 0) {
+        searchResults += "<h3>IT Companies:</h3><ul>";
+        matchedItCompanies.forEach(company => {
+            searchResults += `<li><strong>${company.company}</strong>: ${company.description}</li>`;
+        });
+        searchResults += "</ul>";
+    }
+
+    if (searchResults === "") {
+        searchResults = "<p>No matching results found.</p>";
+    }
+
+    result.innerHTML = searchResults;
+});

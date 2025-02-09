@@ -3,11 +3,18 @@ let content = document.createElement("div");
 content.textContent = "Say something...";
 document.body.appendChild(content);
 
-// Create the voice div to show when the assistant is listening
+// Create the voice div to show when the assistant is listening (with animation)
 let voice = document.createElement("div");
-voice.style.display = "none";
+voice.id = "voice";
+voice.style.display = "none"; // Initially hidden
 voice.textContent = "Listening...";
 document.body.appendChild(voice);
+
+// Create the sidebar for voice commands
+let sidebar = document.createElement("div");
+sidebar.id = "sidebar";
+sidebar.style.display = "none"; // Initially hidden
+document.body.appendChild(sidebar);
 
 // Dataset for programming languages
 const programmingLanguages = [
@@ -58,7 +65,7 @@ function speak(text) {
     text_speak.pitch = 1;
     text_speak.volume = 1;
     text_speak.lang = "en-GB";  // Correct language code
-    window.speechSynthesis.speak(text_speak);
+    window.speechSynthesis.speak(text);
 }
 
 // Voice recognition setup
@@ -72,8 +79,11 @@ if (speechRecognition) {
         takeCommand(transcript.toLowerCase());
     };
 
+    // Automatically start voice recognition when the page loads
     recognition.start();
-    voice.style.display = "block";
+    voice.style.display = "block"; // Show the "Listening" text
+    sidebar.style.display = "block"; // Show the sidebar
+    voice.classList.add("pulse"); // Add the animation class for mic animation
 
 } else {
     alert("Speech Recognition API is not supported by your browser.");
@@ -81,8 +91,10 @@ if (speechRecognition) {
 
 // Function to handle voice commands
 function takeCommand(message) {
-    voice.style.display = "none";
-    
+    voice.style.display = "none"; // Hide the "Listening" text after processing
+    voice.classList.remove("pulse"); // Remove animation class
+    sidebar.style.display = "none"; // Hide the sidebar when command is processed
+
     // Hello command  
     if (message.includes("hello") || message.includes("hey")) {
         speak("Hello Sir, what can I help you with?");

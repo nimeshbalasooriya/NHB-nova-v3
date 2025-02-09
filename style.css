@@ -15,7 +15,7 @@ body{
     flex-direction: column;
 }
 #logo{
-    width: 30vw;
+    width: 50vw;
 }
 h1{
     color: aliceblue;
@@ -23,7 +23,7 @@ h1{
 }
 #name{
     color:rgb(212, 43, 122);
-    font-size: 50px;
+    font-size: 70px;
 }
 #va{
     color:rgb(43, 206, 212);

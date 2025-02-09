@@ -82,7 +82,7 @@ h1 {
     display: none; /* Initially hidden */
 }
 
-.command-text {
+.command-item {
     margin-bottom: 10px;
     padding: 10px;
     background: rgba(255, 255, 255, 0.2);
@@ -90,8 +90,8 @@ h1 {
     font-weight: bold;
 }
 
-/* Styles for buttons or text in the sidebar */
-button {
+/* Button for start listening */
+#btn {
     background-color: rgb(212, 43, 122);
     color: white;
     padding: 10px 20px;
@@ -101,56 +101,6 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+#btn:hover {
     background-color: rgb(255, 82, 182);
-}
-
-/* Text in the content area */
-#content {
-    font-size: 18px;
-    font-weight: bold;
-    color: aliceblue;
-    text-align: center;
-    padding: 10px;
-}
-
-/* Additional layout for the body */
-#sidebar {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    width: 300px;
-    height: auto;
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-}
-
-/* Ensure the voice visualizer (mic animation) is displayed on active commands */
-#voice {
-    font-size: 18px;
-    text-align: center;
-    display: block;
-    color: white;
-    font-weight: bold;
-}
-
-/* Style for each command item */
-.command-item {
-    margin-bottom: 10px;
-    padding: 12px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-    font-size: 18px;
-}
-
-/* Style for speech recognition commands */
-.command-text {
-    font-size: 18px;
-    color: white;
-    padding: 12px;
-    border-radius: 6px;
-    margin-top: 10px;
-    background-color: rgba(255, 255, 255, 0.2);
 }

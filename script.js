@@ -31,7 +31,7 @@ btn.addEventListener("click", () => {
     btn.style.display = "none";
 });
 
-// Handle the commands based on the input message
+// Handle commands based on user input
 function takeCommand(message) {
     voice.style.display = "none";
     voice.classList.remove("pulse");  
@@ -49,58 +49,56 @@ function takeCommand(message) {
         return;
     }
 
-    // **Website Opening Commands**
-    if (message.includes("open youtube")) {
-        speak("Opening YouTube...");
-        window.open("https://youtube.com/", "_blank");
-        return;
-    }
-    if (message.includes("open google")) {
-        speak("Opening Google...");
-        window.open("https://google.com/", "_blank");
-        return;
-    }
-
-    // **Dataset Handling - "What is" Queries**
+    // **"What is" Command for Dataset Queries & Google Search**
     if (message.startsWith("what is ")) {
         let query = message.replace("what is ", "").trim();
+        handleDatasetQuery(query, true);
+        return;
+    }
 
-        // **Check in Buddhist Sites**
-        const site = buddhistSitesInSriLanka.find(item => query.includes(item.english_name.toLowerCase()));
-        if (site) {
-            speak(`${site.english_name}, located in ${site.location}: ${site.description}`);
-            return;
-        }
+    // **Dataset Name Queries**
+    handleDatasetQuery(message, false);
+}
 
-        // **Check in Programming Languages**
-        const language = programmingLanguages.find(lang => query.includes(lang.language.toLowerCase()));
-        if (language) {
-            speak(`${language.language}: ${language.description}`);
-            return;
-        }
+// **Function to Handle Dataset Queries or Google Search**
+function handleDatasetQuery(query, allowGoogleSearch) {
+    // **Check in Buddhist Sites**
+    const site = buddhistSitesInSriLanka.find(item => query === item.english_name.toLowerCase());
+    if (site) {
+        speak(`${site.english_name}, located in ${site.location}: ${site.description}`);
+        return;
+    }
 
-        // **Check in Countries**
-        const country = countries.find(item => query.includes(item.country.toLowerCase()));
-        if (country) {
-            speak(`${country.country} - Capital: ${country.capital}, Population: ${country.population}, Language: ${country.language}, Currency: ${country.currency}`);
-            return;
-        }
+    // **Check in Programming Languages**
+    const language = programmingLanguages.find(lang => query === lang.language.toLowerCase());
+    if (language) {
+        speak(`${language.language}: ${language.description}`);
+        return;
+    }
 
-        // **Check in AI Apps**
-        const app = aiApps.find(item => query.includes(item.app.toLowerCase()));
-        if (app) {
-            speak(`${app.app}: ${app.description}`);
-            return;
-        }
+    // **Check in Countries**
+    const country = countries.find(item => query === item.country.toLowerCase());
+    if (country) {
+        speak(`${country.country} - Capital: ${country.capital}, Population: ${country.population}, Language: ${country.language}, Currency: ${country.currency}`);
+        return;
+    }
 
-        // **Check in IT Companies**
-        const company = itCompanies.find(item => query.includes(item.company.toLowerCase()));
-        if (company) {
-            speak(`${company.company}: ${company.description}`);
-            return;
-        }
+    // **Check in AI Apps**
+    const app = aiApps.find(item => query === item.app.toLowerCase());
+    if (app) {
+        speak(`${app.app}: ${app.description}`);
+        return;
+    }
 
-        // **If Not Found → Google Search**
+    // **Check in IT Companies**
+    const company = itCompanies.find(item => query === item.company.toLowerCase());
+    if (company) {
+        speak(`${company.company}: ${company.description}`);
+        return;
+    }
+
+    // **If Not Found → Perform Google Search (Only for "What is" Queries)**
+    if (allowGoogleSearch) {
         speak(`I couldn't find information on that. Let me search Google for you.`);
         window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, "_blank");
     }

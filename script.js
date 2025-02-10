@@ -49,6 +49,24 @@ function takeCommand(message) {
         return;
     }
 
+    // **Current Time Command**
+    if (message.includes("what time is it")) {
+        speak(getCurrentTime());
+        return;
+    }
+
+    // **Current Date Command**
+    if (message.includes("what is the date")) {
+        speak(getCurrentDate());
+        return;
+    }
+
+    // **Open App Command**
+    if (message.includes("open app")) {
+        openApp(message);
+        return;
+    }
+
     // **"What is" Command for Dataset Queries & Google Search**
     if (message.startsWith("what is ")) {
         let query = message.replace("what is ", "").trim();
@@ -58,6 +76,49 @@ function takeCommand(message) {
 
     // **Dataset Name Queries**
     handleDatasetQuery(message, false);
+}
+
+// **Get Current Time**
+function getCurrentTime() {
+    const currentDate = new Date();
+    let hours = currentDate.getHours();
+    let minutes = currentDate.getMinutes();
+    let seconds = currentDate.getSeconds();
+    let ampm = hours >= 12 ? 'PM' : 'AM';
+
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+
+    return `The current time is ${hours}:${minutes}:${seconds} ${ampm}.`;
+}
+
+// **Get Current Date**
+function getCurrentDate() {
+    const currentDate = new Date();
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1; // Months are 0-based
+    const year = currentDate.getFullYear();
+
+    return `Today's date is ${day}/${month}/${year}.`;
+}
+
+// **Open App Function**
+function openApp(message) {
+    if (message.includes("open browser")) {
+        window.open("https://www.google.com", "_blank");
+        speak("Opening the browser.");
+    } else if (message.includes("open youtube")) {
+        window.open("https://www.youtube.com", "_blank");
+        speak("Opening YouTube.");
+    } else if (message.includes("open calendar")) {
+        // Example for opening a calendar (adjust based on OS/platform)
+        window.open("https://calendar.google.com", "_blank");
+        speak("Opening your calendar.");
+    } else {
+        speak("I am not sure how to open that app.");
+    }
 }
 
 // **Function to Handle Dataset Queries or Google Search**
@@ -94,6 +155,13 @@ function handleDatasetQuery(query, allowGoogleSearch) {
     const company = itCompanies.find(item => query === item.company.toLowerCase());
     if (company) {
         speak(`${company.company}: ${company.description}`);
+        return;
+    }
+
+    // **Check in Cybersecurity Terms**
+    const cybersecurityTerm = cybersecurityTerms.find(item => query === item.term.toLowerCase());
+    if (cybersecurityTerm) {
+        speak(`${cybersecurityTerm.term}: ${cybersecurityTerm.description}`);
         return;
     }
 
@@ -147,4 +215,15 @@ const itCompanies = [
     { company: "Microsoft", description: "Microsoft is known for Windows OS, Office software, and cloud computing solutions." },
     { company: "Amazon", description: "Amazon is a global e-commerce and cloud computing giant with AWS services." },
     { company: "Facebook", description: "Facebook (Meta) is a social media and technology company focusing on VR and AI." }
+];
+
+// **Cybersecurity Terms Dataset**
+const cybersecurityTerms = [
+    { term: "Phishing", description: "Phishing is a type of online scam where attackers pretend to be legitimate organizations to steal sensitive information." },
+    { term: "Malware", description: "Malware is software designed to damage or gain unauthorized access to computer systems." },
+    { term: "Ransomware", description: "Ransomware is malicious software that locks or encrypts files and demands payment for their release." },
+    { term: "Spyware", description: "Spyware is software that secretly monitors and collects user data without their knowledge." },
+    { term: "Firewall", description: "A firewall is a security system that monitors and controls incoming and outgoing network traffic based on predetermined security rules." },
+    { term: "Encryption", description: "Encryption is the process of converting data into a code to prevent unauthorized access." },
+    { term: "DDoS Attack", description: "A Distributed Denial of Service (DDoS) attack involves overwhelming a network or server with traffic to make it unavailable." }
 ];

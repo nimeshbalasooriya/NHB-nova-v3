@@ -8,7 +8,7 @@ function speak(text) {
     text_speak.rate = 1;
     text_speak.pitch = 1;
     text_speak.volume = 1;
-    text_speak.lang = "en-GB";  // Adjust to desired language
+    text_speak.lang = "en-GB";  
     window.speechSynthesis.speak(text_speak);
 }
 
@@ -40,92 +40,89 @@ function takeCommand(message) {
     // **Greeting Command**
     if (message.includes("hello") || message.includes("hey") || message.includes("hi")) {
         speak("Hello! How can I assist you today?");
+        return;
     }
 
     // **Assistant Info Command**
-    else if (message.includes("who are you")) {
+    if (message.includes("who are you")) {
         speak("I am a virtual assistant, created by NHB LK company.");
+        return;
     }
 
     // **Website Opening Commands**
-    else if (message.includes("open youtube") || message.includes("go to youtube")) {
+    if (message.includes("open youtube")) {
         speak("Opening YouTube...");
         window.open("https://youtube.com/", "_blank");
+        return;
     }
-    else if (message.includes("open google") || message.includes("go to google")) {
+    if (message.includes("open google")) {
         speak("Opening Google...");
         window.open("https://google.com/", "_blank");
-    }
-    else if (message.includes("open facebook") || message.includes("go to facebook")) {
-        speak("Opening Facebook...");
-        window.open("https://facebook.com/", "_blank");
-    }
-    else if (message.includes("open twitter") || message.includes("go to twitter")) {
-        speak("Opening Twitter...");
-        window.open("https://twitter.com/", "_blank");
-    }
-    else if (message.includes("open instagram") || message.includes("go to instagram")) {
-        speak("Opening Instagram...");
-        window.open("https://instagram.com/", "_blank");
-    }
-    else if (message.includes("open wikipedia") || message.includes("go to wikipedia")) {
-        speak("Opening Wikipedia...");
-        window.open("https://wikipedia.org/", "_blank");
-    }
-    else if (message.includes("open nhb website")) {
-        speak("Opening NHB LK official website...");
-        window.open("https://nhblk.com/", "_blank");
+        return;
     }
 
-    // **Dataset Handling - Programming Languages**
-    else {
-        const language = programmingLanguages.find(lang => message.includes(lang.language.toLowerCase()));
+    // **Dataset Handling - "What is" Queries**
+    if (message.startsWith("what is ")) {
+        let query = message.replace("what is ", "").trim();
+
+        // **Check in Buddhist Sites**
+        const site = buddhistSitesInSriLanka.find(item => query.includes(item.english_name.toLowerCase()));
+        if (site) {
+            speak(`${site.english_name}, located in ${site.location}: ${site.description}`);
+            return;
+        }
+
+        // **Check in Programming Languages**
+        const language = programmingLanguages.find(lang => query.includes(lang.language.toLowerCase()));
         if (language) {
             speak(`${language.language}: ${language.description}`);
             return;
         }
-    }
 
-    // **Dataset Handling - Countries**
-    const country = countries.find(item => message.includes(item.country.toLowerCase()));
-    if (country) {
-        speak(`${country.country} - Capital: ${country.capital}, Population: ${country.population}, Language: ${country.language}, Currency: ${country.currency}`);
-        return;
-    }
+        // **Check in Countries**
+        const country = countries.find(item => query.includes(item.country.toLowerCase()));
+        if (country) {
+            speak(`${country.country} - Capital: ${country.capital}, Population: ${country.population}, Language: ${country.language}, Currency: ${country.currency}`);
+            return;
+        }
 
-    // **Dataset Handling - AI Apps**
-    const app = aiApps.find(item => message.includes(item.app.toLowerCase()));
-    if (app) {
-        speak(`${app.app}: ${app.description}`);
-        return;
-    }
+        // **Check in AI Apps**
+        const app = aiApps.find(item => query.includes(item.app.toLowerCase()));
+        if (app) {
+            speak(`${app.app}: ${app.description}`);
+            return;
+        }
 
-    // **Dataset Handling - IT Companies**
-    const company = itCompanies.find(item => message.includes(item.company.toLowerCase()));
-    if (company) {
-        speak(`${company.company}: ${company.description}`);
-        return;
-    }
+        // **Check in IT Companies**
+        const company = itCompanies.find(item => query.includes(item.company.toLowerCase()));
+        if (company) {
+            speak(`${company.company}: ${company.description}`);
+            return;
+        }
 
-    // **Dataset Handling - Buddhist Sites**
-    const site = buddhistSitesInSriLanka.find(item => message.includes(item.name.toLowerCase()));
-    if (site) {
-        speak(`${site.name}, located in ${site.location}: ${site.description}`);
-        return;
+        // **If Not Found → Google Search**
+        speak(`I couldn't find information on that. Let me search Google for you.`);
+        window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, "_blank");
     }
-
-    speak("Sorry, I don't have information on that.");
 }
 
 // **Datasets**
+const buddhistSitesInSriLanka = [
+    { english_name: "Temple of the Tooth", sinhala_name: "Sri Dalada Maligawa", location: "Kandy", description: "The Temple of the Sacred Tooth Relic, one of the holiest Buddhist sites in Sri Lanka." },
+    { english_name: "Ruwanwelisaya Stupa", sinhala_name: "Ruwanwelisaya", location: "Anuradhapura", description: "A massive stupa in Anuradhapura, an important Buddhist pilgrimage site." },
+    { english_name: "Dambulla Cave Temple", sinhala_name: "Dambulla Cave Temple", location: "Dambulla", description: "A cave temple complex with Buddhist murals and statues, a UNESCO World Heritage site." },
+    { english_name: "Mihintale", sinhala_name: "Mihintale", location: "Mihintale", description: "The birthplace of Buddhism in Sri Lanka, where King Devanampiya Tissa met Mahinda Thero." },
+    { english_name: "Kiri Vehera", sinhala_name: "Kiri Vehera", location: "Tissamaharama", description: "An ancient Buddhist stupa and a popular pilgrimage site in southern Sri Lanka." }
+];
+
 const programmingLanguages = [
-    { language: "Python", description: "An interpreted, high-level programming language focusing on readability and simplicity." },
-    { language: "JavaScript", description: "A versatile language widely used for web development and interactive websites." },
-    { language: "Java", description: "An object-oriented, high-level programming language for cross-platform applications." },
-    { language: "C", description: "A powerful, general-purpose programming language commonly used for system programming." },
-    { language: "Ruby", description: "A dynamic, high-level programming language known for its simplicity and productivity." },
-    { language: "Go", description: "A statically typed programming language developed by Google for scalability and efficiency." },
-    { language: "Swift", description: "A powerful programming language created by Apple for iOS and macOS applications." }
+    { language: "Python", description: "Python is an interpreted, high-level programming language emphasizing readability and simplicity." },
+    { language: "JavaScript", description: "JavaScript is a high-level programming language widely used for building interactive websites." },
+    { language: "Java", description: "Java is a high-level, object-oriented programming language known for its platform independence." },
+    { language: "C", description: "C is a general-purpose programming language widely used for system programming and embedded systems." },
+    { language: "Ruby", description: "Ruby is an interpreted programming language known for its simplicity and productivity." },
+    { language: "Go", description: "Go is a statically typed programming language developed by Google for scalable systems." },
+    { language: "Swift", description: "Swift is a compiled programming language developed by Apple for iOS and macOS applications." }
 ];
 
 const countries = [
@@ -139,23 +136,17 @@ const countries = [
 ];
 
 const aiApps = [
-    { app: "ChatGPT", description: "A language model developed by OpenAI for natural language processing tasks." },
-    { app: "Google Assistant", description: "An AI-powered virtual assistant by Google for voice-based tasks." },
-    { app: "Siri", description: "Apple's voice-controlled AI assistant available on iOS devices." },
-    { app: "Alexa", description: "Amazon's AI-powered voice assistant used in Echo devices and smart home automation." },
-    { app: "IBM Watson", description: "A robust AI platform offering machine learning and natural language processing services." }
+    { app: "ChatGPT", description: "ChatGPT is a state-of-the-art AI language model developed by OpenAI." },
+    { app: "Google Assistant", description: "Google Assistant is an AI-powered virtual assistant capable of voice interactions." },
+    { app: "Siri", description: "Siri is Apple's voice-controlled AI assistant for iOS devices." },
+    { app: "Alexa", description: "Alexa is Amazon's AI-powered voice assistant for smart home devices." },
+    { app: "IBM Watson", description: "IBM Watson is an AI platform offering various natural language processing services." }
 ];
 
 const itCompanies = [
-    { company: "Apple", description: "A leading technology company designing iPhones, MacBooks, and software solutions." },
-    { company: "Google", description: "A multinational company known for search engines, AI, and cloud computing services." },
-    { company: "Microsoft", description: "A software giant famous for Windows OS, Office Suite, and Azure Cloud services." },
-    { company: "Amazon", description: "A global e-commerce leader with AWS cloud computing and AI innovations." },
-    { company: "Facebook", description: "A social media conglomerate, now Meta, focusing on virtual reality and connectivity." }
-];
-
-const buddhistSitesInSriLanka = [
-    { name: "Sri Dalada Maligawa", location: "Kandy", description: "The Temple of the Sacred Tooth Relic, a significant Buddhist site." },
-    { name: "Anuradhapura", location: "Anuradhapura", description: "Ancient city with important Buddhist sites in Sri Lanka." },
-    { name: "Ruwanwelisaya", location: "Anuradhapura", description: "A massive stupa important for Buddhist worshippers." }
+    { company: "Apple", description: "Apple is a multinational technology company known for iPhones, MacBooks, and iOS." },
+    { company: "Google", description: "Google is a leading tech company specializing in search, AI, and cloud computing." },
+    { company: "Microsoft", description: "Microsoft is known for Windows OS, Office software, and cloud computing solutions." },
+    { company: "Amazon", description: "Amazon is a global e-commerce and cloud computing giant with AWS services." },
+    { company: "Facebook", description: "Facebook (Meta) is a social media and technology company focusing on VR and AI." }
 ];
